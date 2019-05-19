@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
-const LOGIN = true;
+const LOGIN = false;
 
 const PrivateRoute = ({ component, ...rest }) => (
   <Route {...rest} render={(props) => (

@@ -2,11 +2,12 @@ import React from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 
-//import PrivateRoute from './PrivateRoute';
-//import Header from './Header';
-//import Login from './Login';
-//import Logout from './Logout';
-//import Users from './Users';
+import PrivateRoute from './PrivateRoute';
+import Header from './Header';
+import Login from './Login';
+import Logout from './Logout';
+import Users from './Users';
+//import Users from './User';
 
 const NoMatch = ({ location }) => (
   <div>
@@ -15,27 +16,22 @@ const NoMatch = ({ location }) => (
   </div>
 );
 
-const App = () => {
+const App = () => (
   <Grid container>
-    <Grid item xs={2}></Grid>
-    <Grid item xs={8}>
-      // <Header />
-      <Switch>
-        // <PrivateRoute path='/users' component={Users}/>
-        // <Route path='/login' component={Login} />
-        // <Route path='/logout' component={Logout} />
-        // <Route exact path='/' render={() => (
-        //   <Redirect
-        //     to='/home'
-        //   />
-        // )} />
+    <Header />
+    <Switch>
+      <PrivateRoute path='/users' component={Users} />
+      <Route path='/login' component={Login} />
+      <Route path='/logout' component={Logout} />
+      <Route exact path='/' render={() => (
+        <Redirect
+          to='/users'
+        />
+      )} />
 
-        <Route component={NoMatch} />
-      </Switch>
-
-    </Grid>
-    <Grid item xs={2}></Grid>
+      <Route component={NoMatch} />
+    </Switch>
   </Grid>
-}
+);
 
 export default App;

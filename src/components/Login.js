@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import { client } from '../lib/Client';
+import Grid from '@material-ui/core/Grid';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardContent from '@material-ui/core/CardContent';
+
+//import { client } from '../lib/Client';
 
 class Login extends Component {
   state = {
@@ -29,23 +34,35 @@ class Login extends Component {
       );
     } else {
       return (
-        <div>
-          Div para centralizar Form
-          {
-            this.state.loginInProgress ? (
-              <div>Loading...</div>
-            ) : (
-              <div>
-                Form para preenchimento
-                <div
-                  onClick={this.performLogin}
-                >
-                  Click para logar
-                </div>
-              </div>
-            )
-          }
-        </div>
+        <main style={{flexGrow:1}}>
+          <Grid container>
+            <Grid item xs={3}></Grid>
+            <Grid item xs={6}>
+              <Card>
+                <CardHeader
+                  title="Login"
+                />
+                <CardContent>
+                  {
+                    this.state.loginInProgress ? (
+                      <div>Loading...</div>
+                    ) : (
+                      <div>
+                        Form para preenchimento
+                        <div
+                          onClick={this.performLogin}
+                        >
+                          Click para logar
+                        </div>
+                      </div>
+                    )
+                  }
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={3}></Grid>
+          </Grid>
+        </main>
       );
     }
   }

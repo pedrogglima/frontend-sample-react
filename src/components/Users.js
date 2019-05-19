@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
-import { client } from '../lib/Client';
+//import { Route } from 'react-router-dom';
+//import { client } from '../lib/Client';
 
 const USERS = [
   '23O4F21GDWiGd33tFN3ZgI',
