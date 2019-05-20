@@ -7,6 +7,7 @@ import Header from './Header';
 import Login from './Login';
 import Logout from './Logout';
 import Users from './Users';
+import User from './User';
 //import Users from './User';
 
 const NoMatch = ({ location }) => (
@@ -21,12 +22,13 @@ const App = () => (
     <Header />
     <main style={{flexGrow:1}}>
       <Switch>
+        <Route path='/user' component={User} />
         <PrivateRoute path='/users' component={Users} />
         <Route path='/login' component={Login} />
         <Route path='/logout' component={Logout} />
         <Route exact path='/' render={() => (
           <Redirect
-            to='/users'
+            to='/user'
           />
         )} />
 
