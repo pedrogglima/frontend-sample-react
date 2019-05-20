@@ -19,18 +19,20 @@ const NoMatch = ({ location }) => (
 const App = () => (
   <Grid container>
     <Header />
-    <Switch>
-      <PrivateRoute path='/users' component={Users} />
-      <Route path='/login' component={Login} />
-      <Route path='/logout' component={Logout} />
-      <Route exact path='/' render={() => (
-        <Redirect
-          to='/users'
-        />
-      )} />
+    <main style={{flexGrow:1}}>
+      <Switch>
+        <PrivateRoute path='/users' component={Users} />
+        <Route path='/login' component={Login} />
+        <Route path='/logout' component={Logout} />
+        <Route exact path='/' render={() => (
+          <Redirect
+            to='/users'
+          />
+        )} />
 
-      <Route component={NoMatch} />
-    </Switch>
+        <Route component={NoMatch} />
+      </Switch>
+    </main>
   </Grid>
 );
 

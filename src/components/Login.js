@@ -4,6 +4,11 @@ import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
+import FormControl from '@material-ui/core/FormControl';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import Button from '@material-ui/core/Button';
+import Progress from './shared/Progress';
 
 //import { client } from '../lib/Client';
 
@@ -11,6 +16,16 @@ class Login extends Component {
   state = {
     loginInProgress: false,
     shouldRedirect: false,
+    login: this.props.login || '',
+    password: this.props.password || '',
+  };
+
+  handleLoginChange = e => {
+    this.setState({ login: e.target.value });
+  };
+
+  handlePasswordChange = e => {
+    this.setState({ password: e.target.value });
   };
 
   performLogin = () => {
@@ -34,35 +49,56 @@ class Login extends Component {
       );
     } else {
       return (
-        <main style={{flexGrow:1}}>
-          <Grid container>
-            <Grid item xs={3}></Grid>
-            <Grid item xs={6}>
-              <Card>
-                <CardHeader
-                  title="Login"
-                />
-                <CardContent>
-                  {
-                    this.state.loginInProgress ? (
-                      <div>Loading...</div>
-                    ) : (
-                      <div>
-                        Form para preenchimento
-                        <div
+        <Grid container style={{marginTop: '30px'}}>
+          <Grid item xs={2} xl={2} sm={4} md={4} lg={4}></Grid>
+          <Grid item xs={8} xl={8} sm={4} md={4} lg={4}>
+            <Card>
+              <CardHeader
+                title="Login"
+              />
+              <CardContent>
+                {
+                  this.state.loginInProgress ? (
+                    <Progress />
+                  ) : (
+                    <div>
+                      <FormControl required={true} margin="normal" fullWidth={true}>
+                        <InputLabel htmlFor="component-simple">Login</InputLabel>
+                        <Input
+                          id="input_login_id"
+                          value={this.state.login}
+                          onChange={this.handleLoginChange}
+                        />
+                      </FormControl>
+
+                      <FormControl required={true} margin="normal" fullWidth={true}>
+                        <InputLabel htmlFor="component-simple">Password</InputLabel>
+                        <Input
+                          id="input_password_id"
+                          value={this.state.password}
+                          onChange={this.handlePasswordChange}
+                        />
+                      </FormControl>
+
+                      <div style={{ width: '100%', marginTop: '10px' }}>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          size="large"
+                          style={{ width: '100%' }}
                           onClick={this.performLogin}
                         >
-                          Click para logar
-                        </div>
+                          Log in
+                        </Button>
                       </div>
-                    )
-                  }
-                </CardContent>
-              </Card>
-            </Grid>
-            <Grid item xs={3}></Grid>
+                    </div>
+                  )
+                }
+              </CardContent>
+            </Card>
           </Grid>
-        </main>
+          <Grid item xs={2} xl={2} sm={4} md={4} lg={4}></Grid>
+        </Grid>
       );
     }
   }
