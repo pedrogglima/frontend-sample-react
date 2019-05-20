@@ -10,8 +10,6 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 import Progress from './shared/Progress';
 
-//import { client } from '../lib/Client';
-
 class Login extends Component {
   state = {
     loginInProgress: false,
@@ -28,10 +26,17 @@ class Login extends Component {
     this.setState({ password: e.target.value });
   };
 
-  performLogin = () => {
+  onLoginClick = async () => {
     this.setState({ loginInProgress: true });
-    // await client.login();
-    this.setState({ shouldRedirect: true });
+
+    try {
+      await this.props.performLogin(this.state.login, this.state.password);
+      this.setState({ shouldRedirect: true });
+
+    } catch (err) {
+      this.setState({ loginInProgress: false });
+      console.log('show error message: ' + err);
+    }
   };
 
   redirectPath = () => {
@@ -71,6 +76,8 @@ class Login extends Component {
                         />
                       </FormControl>
 
+                      eve.holt@reqres.in
+
                       <FormControl required={true} margin="normal" fullWidth={true}>
                         <InputLabel htmlFor="component-simple">Password</InputLabel>
                         <Input
@@ -86,7 +93,7 @@ class Login extends Component {
                           color="primary"
                           size="large"
                           style={{ width: '100%' }}
-                          onClick={this.performLogin}
+                          onClick={this.onLoginClick}
                         >
                           Log in
                         </Button>

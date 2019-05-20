@@ -1,34 +1,25 @@
+import regeneratorRuntime from 'regenerator-runtime';
+
+const LOCAL_STORAGE_KEY = 'frontend-fake-auth';
+
 class Client {
   constructor() {
     this.useLocalStorage = (typeof localStorage !== 'undefined');
-    this.subscribers = [];
+    this.urlApi = 'https://reqres.in/api';
+    this.delayApi = 'delay=3';
 
     if (this.useLocalStorage) {
       this.token = localStorage.getItem(LOCAL_STORAGE_KEY);
-
-      if (this.token) {
-        this.isTokenValid().then((bool) => {
-          if (!bool) {
-            this.token = null;
-          }
-        });
-      }
+    } else {
+      console.log('error Local Storage');
     }
   }
 
-  isLoggedIn() {
+  isLoggedIn = () => {
     return !!this.token;
   }
 
-  subscribe(cb) {
-    this.subscribers.push(cb);
-  }
-
-  notifySubscribers() {
-    this.subscribers.forEach((cb) => cb(this.isLoggedIn()));
-  }
-
-  setToken(token) {
+  setToken = (token) => {
     this.token = token;
 
     if (this.useLocalStorage) {
@@ -36,7 +27,7 @@ class Client {
     }
   }
 
-  removeToken() {
+  removeToken = () => {
     this.token = null;
 
     if (this.useLocalStorage) {
@@ -44,66 +35,52 @@ class Client {
     }
   }
 
-  isTokenValid() {
-    // See note about tokens above
-    const url = '/api/check_token?token=' + this.token;
-    return fetch(url, {
-      method: 'get',
-      headers: {
-        accept: 'application/json',
-      },
-    }).then(this.checkStatus)
-      .then(this.parseJson)
-      .then((json) => json.valid === true);
-  }
-
-  getAlbum(albumId) {
-    return this.getAlbums([ albumId ], albums => albums[0]);
-  }
-
-  getAlbums(albumIds) {
-    // See note about tokens above
-    const url = (
-      '/api/albums?ids=' + albumIds.join(',') + '&token=' + this.token
-    );
-    return fetch(url, {
-      method: 'get',
-      headers: {
-        accept: 'application/json',
-      },
-    }).then(this.checkStatus)
-      .then(this.parseJson);
-  }
-
-  login() {
-    return fetch('/api/login', {
-      method: 'post',
-      headers: {
-        accept: 'application/json',
-      },
-    }).then(this.checkStatus)
-      .then(this.parseJson)
-      .then((json) => this.setToken(json.token));
-  }
-
-  logout() {
+  logout = () => {
     this.removeToken();
   }
 
-  checkStatus(response) {
-    if (response.status >= 200 && response.status < 300) {
-      return response;
-    } else {
-      const error = new Error(`HTTP Error ${response.statusText}`);
-      error.status = response.statusText;
-      error.response = response;
-      console.log(error);
-      throw error;
+  login = async (email, password) => {
+    try {
+      const url = this.urlApi + '/login?' + this.delayApi;
+
+      const resp = await this.fetchJSON(
+        url,
+        'POST',
+        JSON.stringify({
+          email: email,
+          password: password,
+        })
+      );
+      this.setToken(resp.token);
+    } catch (err) {
+      throw err;
     }
   }
 
-  parseJson(response) {
-    return response.json();
+  fetchJSON = async (url, method = 'GET', body = '') => {
+    try {
+      let response;
+      const header = new Headers();
+
+      if (body.length > 0) {
+        header.append('Accept', 'application/json');
+        header.append('Content-Type', 'application/json');
+        header.append('Content-length', body.length.toString());
+
+        response = await fetch(url, { method: method, headers: header, body: body });
+      } else {
+        response = await fetch(url, { method: method, headers: header });
+      }
+
+      if (!response.ok) {
+        const respBody = await response.json();
+        throw new Error('status: ' + response.status + ', message: ' + respBody.error);
+      }
+
+      return await response.json();
+    } catch (err) {
+      throw err;
+    }
   }
 }
 

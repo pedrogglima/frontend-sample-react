@@ -1,12 +1,10 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-
-const LOGIN = true;
+import { client } from '../lib/Client';
 
 const PrivateRoute = ({ component, ...rest }) => (
   <Route {...rest} render={(props) => (
-    //isLoggedIn();
-    LOGIN ? (
+    client.isLoggedIn() ? (
       React.createElement(component, props)
     ) : (
       <Redirect to={{
