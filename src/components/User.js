@@ -10,16 +10,17 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 import Progress from './shared/Progress';
 
-//import { client } from '../lib/Client';
+import { client } from '../lib/Client';
 
 const USER = {
-  user: '3AQgdwMNCiN7awXch5fAaG'
-};
+  id:1,
+  first_name: "George",
+  last_name: "Bluth",
+}
 
 class User extends Component {
   state = {
     updateInProgress: false,
-    fetched: false,
     user: null,
     firstName: '',
     lastName: '',
@@ -29,12 +30,17 @@ class User extends Component {
     this.getUser();
   }
 
-  getUser = () => {
-    // await client.getUser();
-    this.setState({
-      fetched: true,
-      user: USER,
-    });
+  getUser = async () => {
+    try {
+      // const user = await client.getUser();
+      this.setState({
+        fetched: true,
+        //user: user,
+        user: USER,
+      });
+    } catch (err) {
+      console.log('Show user error message: ' + err);
+    }
   };
 
   handleFirstNameChange = e => {
@@ -45,24 +51,20 @@ class User extends Component {
     this.setState({ lastName: e.target.value });
   };
 
-  performUpdate = () => {
-    this.setState({ updateInProgress: true });
-    // await client.update();
-    this.setState({ shouldRedirect: true });
-  };
-
-  redirectPath = () => {
-    const locationState = this.props.location.state;
-    const pathname = (
-      locationState && locationState.from && locationState.from.pathname
-    );
-    return pathname || '/users';
+  performUpdate = async () => {
+    try {
+      this.setState({ updateInProgress: true });
+      // await client.update();
+      this.setState({ shouldRedirect: true });
+    } catch (err) {
+      console.log('Show user error message: ' + err);
+    }
   };
 
   render() {
     if (this.state.shouldRedirect) {
       return (
-        <Redirect to={this.redirectPath()} />
+        <Redirect to={'/users'} />
       );
     } else {
       return (
@@ -83,7 +85,7 @@ class User extends Component {
                         <InputLabel htmlFor="component-simple">First name</InputLabel>
                         <Input
                           id="input_first_name_id"
-                          value={this.state.firstName}
+                          value={this.state.first_name}
                           onChange={this.handleFirstNameChange}
                         />
                       </FormControl>
@@ -92,7 +94,7 @@ class User extends Component {
                         <InputLabel htmlFor="component-simple">Last name</InputLabel>
                         <Input
                           id="input_last_name_id"
-                          value={this.state.lastName}
+                          value={this.state.last_name}
                           onChange={this.handleLastNameChange}
                         />
                       </FormControl>

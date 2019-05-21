@@ -52,13 +52,17 @@ class Users extends Component {
   }
 
   getUsers = async () => {
-    //const users = await client.findByPage();
-    //console.log('users-getUsers: ' + JSON.stringify(users));
-    this.setState({
-      fetched: true,
-      users: USERS,
-      //users: users,
-    });
+    try {
+      //const users = await client.findByPage();
+      //console.log('users-getUsers: ' + JSON.stringify(users));
+      this.setState({
+        fetched: true,
+        users: USERS,
+        //users: users,
+      });
+    } catch (err) {
+      console.log('Show users error message: ' + err);
+    }
   };
 
   render() {
