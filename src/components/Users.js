@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-//import { Route } from 'react-router-dom';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
@@ -28,7 +27,8 @@ const USERS = {
     {
       id: 2,
       email: "janet.weaver@reqres.in",
-      first_name: "Janet","last_name":"Weaver",
+      first_name: "Janet",
+      last_name: "Weaver",
       avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/josephstein/128.jpg"
     },
     {
@@ -65,6 +65,10 @@ class Users extends Component {
     }
   };
 
+  handleDelete = async () => {
+    // delete user
+  }
+
   render() {
     if (!this.state.fetched) {
       return (
@@ -86,10 +90,10 @@ class Users extends Component {
               secondary={user.first_name}
             />
             <ListItemSecondaryAction>
-            <Button href="#text-buttons">
+            <Button onClick={() => this.props.history.push('/users/:id')}>
               Edit
             </Button>
-            <Button href="#text-buttons">
+            <Button onClick={this.handleDelete}>
               Delete
             </Button>
             </ListItemSecondaryAction>

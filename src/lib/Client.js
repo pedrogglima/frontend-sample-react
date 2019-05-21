@@ -74,6 +74,38 @@ class Client {
     }
   }
 
+  findById = async (id) => {
+    try {
+      const url = this.urlApi + `/users/${id}?` + this.delayApi;
+      const resp = await fetchJSON(url);
+
+      return {
+        id: resp.data.id,
+        fist_name: resp.data.first_name,
+        last_name: resp.data.last_name,
+        avatar: resp.data.avatar,
+      }
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  update = async (id, nome, sobrenome) => {
+    try {
+      const url = this.urlApi + `/users/${id}?` + this.delayApi;
+      await fetchJSON(
+        url,
+        'PUT',
+        JSON.stringify({
+          first_name: nome,
+          last_name: sobrenome,
+        })
+      );
+    } catch (err) {
+      throw err;
+    }
+  }
+
   fetchJSON = async (url, method = 'GET', body = '') => {
     try {
       let response;

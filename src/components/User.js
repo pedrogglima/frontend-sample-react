@@ -13,9 +13,10 @@ import Progress from './shared/Progress';
 import { client } from '../lib/Client';
 
 const USER = {
-  id:1,
+  id: 1,
   first_name: "George",
   last_name: "Bluth",
+  avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/olegpogodaev/128.jpg"
 }
 
 class User extends Component {
@@ -32,11 +33,13 @@ class User extends Component {
 
   getUser = async () => {
     try {
-      // const user = await client.getUser();
+      //const urlParams = this.props.location.search;
+      // extract params from urlParams
+      const user = await client.findById(1);
       this.setState({
         fetched: true,
-        //user: user,
-        user: USER,
+        user: user,
+        //user: USER,
       });
     } catch (err) {
       console.log('Show user error message: ' + err);
@@ -54,7 +57,10 @@ class User extends Component {
   performUpdate = async () => {
     try {
       this.setState({ updateInProgress: true });
-      // await client.update();
+      await client.update(
+        this.state.user.first_name,
+        this.state.user.last_name
+      );
       this.setState({ shouldRedirect: true });
     } catch (err) {
       console.log('Show user error message: ' + err);
@@ -85,7 +91,7 @@ class User extends Component {
                         <InputLabel htmlFor="component-simple">First name</InputLabel>
                         <Input
                           id="input_first_name_id"
-                          value={this.state.first_name}
+                          value={this.state.user.fist_name}
                           onChange={this.handleFirstNameChange}
                         />
                       </FormControl>
@@ -94,7 +100,7 @@ class User extends Component {
                         <InputLabel htmlFor="component-simple">Last name</InputLabel>
                         <Input
                           id="input_last_name_id"
-                          value={this.state.last_name}
+                          value={this.state.user.last_name}
                           onChange={this.handleLastNameChange}
                         />
                       </FormControl>
