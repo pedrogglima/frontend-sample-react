@@ -9,35 +9,37 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 
 import Progress from './shared/Progress';
+import { client } from '../lib/Client';
 
-//import { client } from '../lib/Client';
 
-const USERS = [
-  {
-    id: '7893AQgdwMNCiN7awXch5fAaG',
-    firstName:'John',
-    lastName:'Smith',
-    avatar:'url1'
-  },
-  {
-    id: '5673AQgdwMNCiN7awXch5fAaG',
-    firstName:'Adam',
-    lastName:'Rocky',
-    avatar:'url2'
-  },
-  {
-    id: '123AQgdwMNCiN7awXch5fAaG',
-    firstName:'San',
-    lastName:'Toddy',
-    avatar:'url3'
-  },
-  {
-    id: '003AQgJAhuquAKpo4qp5fAaG',
-    firstName:'Humbert',
-    lastName:'Oliver',
-    avatar:'url4'
-  }
-];
+const USERS = {
+  userPage: 1,
+  userPerPage: 3,
+  userTotal: 12,
+  userTotalPages: 4,
+  userList: [
+    {
+      id:1,
+      email: "george.bluth@reqres.in",
+      first_name: "George",
+      last_name: "Bluth",
+      avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/calebogden/128.jpg"
+    },
+    {
+      id: 2,
+      email: "janet.weaver@reqres.in",
+      first_name: "Janet","last_name":"Weaver",
+      avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/josephstein/128.jpg"
+    },
+    {
+      id: 3,
+      email: "emma.wong@reqres.in",
+      first_name: "Emma",
+      last_name: "Wong",
+      avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/olegpogodaev/128.jpg"
+    }
+  ]
+}
 
 class Users extends Component {
   state = {
@@ -49,11 +51,13 @@ class Users extends Component {
     this.getUsers();
   }
 
-  getUsers = () => {
-    // await client.getUsers();
+  getUsers = async () => {
+    //const users = await client.findByPage();
+    //console.log('users-getUsers: ' + JSON.stringify(users));
     this.setState({
       fetched: true,
       users: USERS,
+      //users: users,
     });
   };
 
@@ -65,17 +69,17 @@ class Users extends Component {
     } else {
       return (
         <List >
-        {this.state.users.map(user => (
+        {this.state.users.userList.map(user => (
           <ListItem key={user.id} button>
             <ListItemAvatar>
               <Avatar
-                alt={`Avatar ${user.avatar}`}
-                src={'#'}
+                alt={'Avatar'}
+                src={user.avatar}
               />
             </ListItemAvatar>
             <ListItemText
-              primary={user.lastName}
-              secondary={user.firstName}
+              primary={user.last_name}
+              secondary={user.first_name}
             />
             <ListItemSecondaryAction>
             <Button href="#text-buttons">

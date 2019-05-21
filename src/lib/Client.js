@@ -57,6 +57,23 @@ class Client {
     }
   }
 
+  findByPage = async (pageNumber = '1') => {
+    try {
+      const url = this.urlApi + `/users?page=${pageNumber}&` + this.delayApi;
+      const resp = await this.fetchJSON(url);
+
+      return {
+        userPage: resp.page,
+        userPerPage: resp.per_page,
+        userTotal: resp.total,
+        userTotalPages: resp.total_pages,
+        userList: resp.data,
+      }
+    } catch (err) {
+      throw err;
+    }
+  }
+
   fetchJSON = async (url, method = 'GET', body = '') => {
     try {
       let response;
