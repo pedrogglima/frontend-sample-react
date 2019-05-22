@@ -147,7 +147,8 @@ class Users extends Component {
     }
   }
 
-  // handle case where state users = [] (empty)
+  // Missing
+  // case where users_list is empty
   render() {
     if (this.state.inProgress) {
       return (
@@ -156,14 +157,14 @@ class Users extends Component {
     } else {
       return (
         <List >
-        {this.state.users.user_list.map(user => (
-          <ListItemComponent
-            user={user}
-            redirectToEdit={this.redirectToEdit}
-            performDelete={this.performDelete}
-          />
-        ))}
-      </List>
+          {this.state.users.user_list.map(user => (
+            <ListItemComponent
+              user={user}
+              redirectToEdit={this.redirectToEdit}
+              performDelete={this.performDelete}
+            />
+          ))}'
+        </List>
       );
     }
   }
