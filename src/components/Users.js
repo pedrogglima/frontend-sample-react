@@ -81,6 +81,13 @@ class Users extends Component {
       // ou é possível recuperar from the DOM.
       //const user = await client.findById(1);
 
+
+      // Observation
+      // State passed throught the URL has a size limit e.g Firefox has
+      // a size limit of 640k characters on the serialized representation
+      // of a state object.
+      // It may be necessary check to size of the obj & if it's serialized
+      // otherwise it may throw a error message.
       this.props.history.push({
         pathname: '/users/1',
         // search: '?id=1',
