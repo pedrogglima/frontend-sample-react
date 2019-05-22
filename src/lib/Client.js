@@ -77,11 +77,11 @@ class Client {
   findById = async (id) => {
     try {
       const url = this.urlApi + `/users/${id}?` + this.delayApi;
-      const resp = await fetchJSON(url);
+      const resp = await this.fetchJSON(url);
 
       return {
         id: resp.data.id,
-        fist_name: resp.data.first_name,
+        first_name: resp.data.first_name,
         last_name: resp.data.last_name,
         avatar: resp.data.avatar,
       }
@@ -93,7 +93,7 @@ class Client {
   update = async (id, nome, sobrenome) => {
     try {
       const url = this.urlApi + `/users/${id}?` + this.delayApi;
-      await fetchJSON(
+      await this.fetchJSON(
         url,
         'PUT',
         JSON.stringify({

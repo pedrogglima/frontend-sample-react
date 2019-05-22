@@ -46,8 +46,8 @@ class App extends Component {
         />
         <main style={{flexGrow:1}}>
           <Switch>
-            <PrivateRoute path='/users' component={Users} />
             <PrivateRoute path='/users/:id' component={User} />
+            <PrivateRoute path='/users' component={Users} />
             <Route
               path='/login'
               render={(props) =>

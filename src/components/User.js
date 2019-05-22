@@ -12,57 +12,28 @@ import Progress from './shared/Progress';
 
 import { client } from '../lib/Client';
 
-const USER = {
-  id: 1,
-  first_name: "George",
-  last_name: "Bluth",
-  avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/olegpogodaev/128.jpg"
-}
-
 class User extends Component {
   state = {
-    updateInProgress: false,
-    user: null,
-    firstName: '',
-    lastName: '',
+    inProgress: false,
+    user: this.props.location.state.user,
   };
 
-  componentDidMount() {
-    this.getUser();
-  }
-
-  getUser = async () => {
-    try {
-      //const urlParams = this.props.location.search;
-      // extract params from urlParams
-      const user = await client.findById(1);
-      this.setState({
-        fetched: true,
-        user: user,
-        //user: USER,
-      });
-    } catch (err) {
-      console.log('Show user error message: ' + err);
-    }
-  };
-
-  handleFirstNameChange = e => {
-    this.setState({ firstName: e.target.value });
-  };
-
-  handleLastNameChange = e => {
-    this.setState({ lastName: e.target.value });
+  onInputChange = (evt) => {
+    const user = this.state.user;
+    user[evt.target.name] = evt.target.value;
+    this.setState({ user });
   };
 
   performUpdate = async () => {
     try {
-      this.setState({ updateInProgress: true });
+      this.setState({ inProgress: true });
       await client.update(
         this.state.user.first_name,
         this.state.user.last_name
       );
       this.setState({ shouldRedirect: true });
     } catch (err) {
+      this.setState({ inProgress: false });
       console.log('Show user error message: ' + err);
     }
   };
@@ -83,7 +54,7 @@ class User extends Component {
               />
               <CardContent>
                 {
-                  this.state.updateInProgress ? (
+                  this.state.inProgress ? (
                     <Progress />
                   ) : (
                     <div>
@@ -91,8 +62,9 @@ class User extends Component {
                         <InputLabel htmlFor="component-simple">First name</InputLabel>
                         <Input
                           id="input_first_name_id"
-                          value={this.state.user.fist_name}
-                          onChange={this.handleFirstNameChange}
+                          name='first_name'
+                          value={this.state.user.first_name}
+                          onChange={this.onInputChange}
                         />
                       </FormControl>
 
@@ -100,8 +72,9 @@ class User extends Component {
                         <InputLabel htmlFor="component-simple">Last name</InputLabel>
                         <Input
                           id="input_last_name_id"
+                          name='last_name'
                           value={this.state.user.last_name}
-                          onChange={this.handleLastNameChange}
+                          onChange={this.onInputChange}
                         />
                       </FormControl>
 

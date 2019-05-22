@@ -10,6 +10,12 @@ import Button from '@material-ui/core/Button';
 import Progress from './shared/Progress';
 import { client } from '../lib/Client';
 
+const USER = {
+  id: 1,
+  first_name: "George",
+  last_name: "Bluth",
+  avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/olegpogodaev/128.jpg"
+}
 
 const USERS = {
   userPage: 1,
@@ -43,7 +49,7 @@ const USERS = {
 
 class Users extends Component {
   state = {
-    fetched: false,
+    inProgress: true,
     users: [],
   };
 
@@ -54,9 +60,8 @@ class Users extends Component {
   getUsers = async () => {
     try {
       //const users = await client.findByPage();
-      //console.log('users-getUsers: ' + JSON.stringify(users));
       this.setState({
-        fetched: true,
+        inProgress: false,
         users: USERS,
         //users: users,
       });
@@ -65,12 +70,38 @@ class Users extends Component {
     }
   };
 
-  handleDelete = async () => {
+  redirectToEdit = async () => {
+    try {
+      this.setState({ inProgress: true });
+
+      //const urlParams = this.props.location.search;
+      // extract params from urlParams
+      // arrumar URL para users?id=1
+      // Ver se é necessário fazer uma chamada para encontrar USER
+      // ou é possível recuperar from the DOM.
+      //const user = await client.findById(1);
+
+      this.props.history.push({
+        pathname: '/users/1',
+        // search: '?id=1',
+        //state: { user: user }
+        state: { user: USER }
+      })
+
+      this.setState({ inProgress: false });
+
+    } catch(err) {
+      this.setState({ inProgress: false });
+      console.log('Show user error message: ' + err);
+    }
+  }
+
+  performDelete = async () => {
     // delete user
   }
 
   render() {
-    if (!this.state.fetched) {
+    if (this.state.inProgress) {
       return (
         <Progress />
       );
@@ -90,10 +121,10 @@ class Users extends Component {
               secondary={user.first_name}
             />
             <ListItemSecondaryAction>
-            <Button onClick={() => this.props.history.push('/users/:id')}>
+            <Button onClick={this.redirectToEdit}>
               Edit
             </Button>
-            <Button onClick={this.handleDelete}>
+            <Button onClick={this.performDelete}>
               Delete
             </Button>
             </ListItemSecondaryAction>
