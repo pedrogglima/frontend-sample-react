@@ -18,11 +18,11 @@ const USER = {
 }
 
 const USERS = {
-  userPage: 1,
-  userPerPage: 3,
-  userTotal: 12,
-  userTotalPages: 4,
-  userList: [
+  user_page: 1,
+  user_per_page: 3,
+  user_total: 12,
+  user_total_pages: 4,
+  user_list: [
     {
       id:1,
       email: "george.bluth@reqres.in",
@@ -47,10 +47,43 @@ const USERS = {
   ]
 }
 
+const ListItemComponent = (props) => {
+  const onEditClick = () => {
+    props.redirectToEdit(props.user.id);
+  };
+
+  const onDeleteClick = () => {
+    props.performDelete(props.user.id);
+  };
+
+  return (
+    <ListItem key={props.user.id} button>
+      <ListItemAvatar>
+        <Avatar
+          alt={'Avatar'}
+          src={props.user.avatar}
+        />
+      </ListItemAvatar>
+      <ListItemText
+        primary={props.user.last_name}
+        secondary={props.user.first_name}
+      />
+      <ListItemSecondaryAction>
+      <Button onClick={onEditClick}>
+        Edit
+      </Button>
+      <Button onClick={onDeleteClick}>
+        Delete
+      </Button>
+      </ListItemSecondaryAction>
+    </ListItem>
+  );
+}
+
 class Users extends Component {
   state = {
     inProgress: true,
-    users: [],
+    users: null,
   };
 
   componentDidMount() {
@@ -59,38 +92,31 @@ class Users extends Component {
 
   getUsers = async () => {
     try {
-      //const users = await client.findByPage();
+      // const users = await client.findByPage();
       this.setState({
         inProgress: false,
         users: USERS,
         //users: users,
       });
     } catch (err) {
+      this.setState({ inProgress: false });
       console.log('Show users error message: ' + err);
     }
   };
 
-  redirectToEdit = async () => {
+  redirectToEdit = async (id) => {
     try {
       this.setState({ inProgress: true });
-
-      //const urlParams = this.props.location.search;
-      // extract params from urlParams
-      // arrumar URL para users?id=1
-      // Ver se é necessário fazer uma chamada para encontrar USER
-      // ou é possível recuperar from the DOM.
-      //const user = await client.findById(1);
-
+      const user = await client.findById(id);
 
       // Observation
       // State passed throught the URL has a size limit e.g Firefox has
       // a size limit of 640k characters on the serialized representation
       // of a state object.
-      // It may be necessary check to size of the obj & if it's serialized
-      // otherwise it may throw a error message.
+      // It may be necessary check the size of the obj, otherwise it may
+      // throw a error message.
       this.props.history.push({
-        pathname: '/users/1',
-        // search: '?id=1',
+        pathname: '/users/' + id,
         //state: { user: user }
         state: { user: USER }
       })
@@ -103,10 +129,25 @@ class Users extends Component {
     }
   }
 
-  performDelete = async () => {
-    // delete user
+  performDelete = async (id) => {
+    try {
+      this.setState({ inProgress: true });
+      await client.deleteById(id);
+
+      this.setState({
+        inProgress: false,
+        users: Object.assign(this.state.users, {
+          user_list: this.state.users.user_list.filter(u => u.id !== id)
+        })
+      });
+
+    } catch(err) {
+      this.setState({ inProgress: false });
+      console.log('Show user error message: ' + err);
+    }
   }
 
+  // handle case where state users = [] (empty)
   render() {
     if (this.state.inProgress) {
       return (
@@ -115,27 +156,12 @@ class Users extends Component {
     } else {
       return (
         <List >
-        {this.state.users.userList.map(user => (
-          <ListItem key={user.id} button>
-            <ListItemAvatar>
-              <Avatar
-                alt={'Avatar'}
-                src={user.avatar}
-              />
-            </ListItemAvatar>
-            <ListItemText
-              primary={user.last_name}
-              secondary={user.first_name}
-            />
-            <ListItemSecondaryAction>
-            <Button onClick={this.redirectToEdit}>
-              Edit
-            </Button>
-            <Button onClick={this.performDelete}>
-              Delete
-            </Button>
-            </ListItemSecondaryAction>
-          </ListItem>
+        {this.state.users.user_list.map(user => (
+          <ListItemComponent
+            user={user}
+            redirectToEdit={this.redirectToEdit}
+            performDelete={this.performDelete}
+          />
         ))}
       </List>
       );

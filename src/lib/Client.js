@@ -63,11 +63,11 @@ class Client {
       const resp = await this.fetchJSON(url);
 
       return {
-        userPage: resp.page,
-        userPerPage: resp.per_page,
-        userTotal: resp.total,
-        userTotalPages: resp.total_pages,
-        userList: resp.data,
+        user_page: resp.page,
+        user_per_page: resp.per_page,
+        user_total: resp.total,
+        user_total_pages: resp.total_pages,
+        user_list: resp.data,
       }
     } catch (err) {
       throw err;
@@ -90,17 +90,26 @@ class Client {
     }
   }
 
-  update = async (id, nome, sobrenome) => {
+  update = async (user) => {
     try {
-      const url = this.urlApi + `/users/${id}?` + this.delayApi;
+      const url = this.urlApi + `/users/${user.id}?` + this.delayApi;
       await this.fetchJSON(
         url,
         'PUT',
         JSON.stringify({
-          first_name: nome,
-          last_name: sobrenome,
+          first_name: user.first_name,
+          last_name: user.last_name,
         })
       );
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  deleteById = async (id) => {
+    try {
+      const url = this.urlApi + `/users/${id}?` + this.delayApi;
+      await this.fetchJSON(url);
     } catch (err) {
       throw err;
     }
