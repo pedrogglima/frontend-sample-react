@@ -27,7 +27,7 @@ class User extends Component {
   performUpdate = async () => {
     try {
       this.setState({ inProgress: true });
-      await client.update(this.state.user);
+      //await client.update(this.state.user);
       this.setState({ shouldRedirect: true });
     } catch (err) {
       this.setState({ inProgress: false });

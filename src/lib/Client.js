@@ -57,17 +57,17 @@ class Client {
     }
   }
 
-  findByPage = async (pageNumber = '1') => {
+  findByPage = async (page = 1) => {
     try {
-      const url = this.urlApi + `/users?page=${pageNumber}&` + this.delayApi;
+      const url = this.urlApi + `/users?page=${page}&` + this.delayApi;
       const resp = await this.fetchJSON(url);
 
       return {
-        user_page: resp.page,
-        user_per_page: resp.per_page,
-        user_total: resp.total,
-        user_total_pages: resp.total_pages,
-        user_list: resp.data,
+        page: resp.page,
+        per_page: resp.per_page,
+        total: resp.total,
+        total_pages: resp.total_pages,
+        data: resp.data,
       }
     } catch (err) {
       throw err;

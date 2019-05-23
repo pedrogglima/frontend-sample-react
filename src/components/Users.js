@@ -1,68 +1,26 @@
 import React, { Component } from 'react';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
 import Typography from '@material-ui/core/Typography';
-import uuidv4 from 'uuid/v4';
 
+import ListWithPagination from './users/ListUsers';
 import CustomizedSnackbar from './shared/CustomizedSnackbar';
 import Progress from './shared/Progress';
 import { client } from '../lib/Client';
-import { user, users } from '../data/User'
-
-
-const ListItemComponent = (props) => {
-  const onEditClick = () => {
-    props.redirectToEdit(props.user.id);
-  };
-
-  const onDeleteClick = () => {
-    props.performDelete(props.user.id);
-  };
-
-  return (
-    <ListItem key={props.uuid}>
-      <ListItemAvatar>
-        <Avatar
-          alt={'Avatar'}
-          src={props.user.avatar}
-        />
-      </ListItemAvatar>
-      <ListItemText
-        primary={props.user.last_name}
-        secondary={props.user.first_name}
-      />
-      <ListItemSecondaryAction>
-        <IconButton
-          aria-label="EDIT"
-          onClick={onEditClick}
-        >
-          <EditIcon className="material-icons" />
-        </IconButton>
-        <IconButton
-          aria-label="DELETE"
-          onClick={onDeleteClick}
-        >
-          <DeleteIcon className="material-icons" />
-        </IconButton>
-      </ListItemSecondaryAction>
-    </ListItem>
-  );
-}
+import { user, findByPage } from '../data/User'
 
 class Users extends Component {
   state = {
-    inProgress: true,
-    users: {
-      user_list: []
-    },
+    inProgress: false,
     hasMessage: false,
+    users: {
+      page: 0,
+      per_page: 0,
+      total: 0,
+      total_pages: 0,
+      data: []
+    },
+    pagination: {
+      offset: 0,
+    },
     snackbar: {
       variant: 'error',
       message: 'unexpected error'
@@ -73,13 +31,17 @@ class Users extends Component {
     this.getUsers();
   }
 
-  getUsers = async () => {
+  getUsers = async (offset = 0, page = 1) => {
     try {
-      // const users = await client.findByPage();
+      this.setState({ inProgress: true });
+      //const users = await client.findByPage(page);
+      const users = findByPage(offset);
       this.setState({
         inProgress: false,
-        users: users(),
-        //users: users,
+        users: users,
+        pagination: {
+          offset: offset
+        }
       });
     } catch (err) {
       this.setState({
@@ -132,7 +94,7 @@ class Users extends Component {
       this.setState({
         inProgress: false,
         users: Object.assign(this.state.users, {
-          user_list: this.state.users.user_list.filter(u => u.id !== id)
+          data: this.state.users.data.filter(u => u.id !== id)
         }),
         hasMessage: true,
         snackbar: {
@@ -150,6 +112,10 @@ class Users extends Component {
         }
       });
     }
+  }
+
+  performPageChange = (offset) => {
+    this.getUsers(offset);
   }
 
   closeMessage = () => {
@@ -174,21 +140,18 @@ class Users extends Component {
             : null
           }
           {
-            this.state.users.user_list.length === 0 ?
+            this.state.users.data.length === 0 ?
               <Typography variant="h6" align="center" color="default">
                 There are no users registered
               </Typography>
             :
-              <List >
-                {this.state.users.user_list.map(user => (
-                  <ListItemComponent
-                    uuid={uuidv4()}
-                    user={user}
-                    redirectToEdit={this.redirectToEdit}
-                    performDelete={this.performDelete}
-                  />
-                ))}'
-              </List>
+              <ListWithPagination
+                users={this.state.users}
+                pagination={this.state.pagination}
+                redirectToEdit={this.redirectToEdit}
+                performDelete={this.performDelete}
+                performPageChange={this.performPageChange}
+              />
           }
         </div>
       );
