@@ -5,13 +5,17 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import Typography from '@material-ui/core/Typography';
 import uuidv4 from 'uuid/v4';
 
 import CustomizedSnackbar from './shared/CustomizedSnackbar';
 import Progress from './shared/Progress';
 import { client } from '../lib/Client';
 import { user, users } from '../data/User'
+
 
 const ListItemComponent = (props) => {
   const onEditClick = () => {
@@ -23,7 +27,7 @@ const ListItemComponent = (props) => {
   };
 
   return (
-    <ListItem key={props.uuid} button>
+    <ListItem key={props.uuid}>
       <ListItemAvatar>
         <Avatar
           alt={'Avatar'}
@@ -35,12 +39,18 @@ const ListItemComponent = (props) => {
         secondary={props.user.first_name}
       />
       <ListItemSecondaryAction>
-      <Button onClick={onEditClick}>
-        Edit
-      </Button>
-      <Button onClick={onDeleteClick}>
-        Delete
-      </Button>
+        <IconButton
+          aria-label="EDIT"
+          onClick={onEditClick}
+        >
+          <EditIcon className="material-icons" />
+        </IconButton>
+        <IconButton
+          aria-label="DELETE"
+          onClick={onDeleteClick}
+        >
+          <DeleteIcon className="material-icons" />
+        </IconButton>
       </ListItemSecondaryAction>
     </ListItem>
   );
@@ -49,7 +59,9 @@ const ListItemComponent = (props) => {
 class Users extends Component {
   state = {
     inProgress: true,
-    users: null,
+    users: {
+      user_list: []
+    },
     hasMessage: false,
     snackbar: {
       variant: 'error',
@@ -115,7 +127,7 @@ class Users extends Component {
   performDelete = async (id) => {
     try {
       this.setState({ inProgress: true });
-      await client.deleteById(id);
+      //await client.deleteById(id);
 
       this.setState({
         inProgress: false,
@@ -144,8 +156,6 @@ class Users extends Component {
     this.setState({ hasMessage: false });
   }
 
-  // Missing
-  // case where users_list is empty
   render() {
     if (this.state.inProgress) {
       return (
@@ -163,16 +173,23 @@ class Users extends Component {
               />
             : null
           }
-          <List >
-            {this.state.users.user_list.map(user => (
-              <ListItemComponent
-                uuid={uuidv4()}
-                user={user}
-                redirectToEdit={this.redirectToEdit}
-                performDelete={this.performDelete}
-              />
-            ))}'
-          </List>
+          {
+            this.state.users.user_list.length === 0 ?
+              <Typography variant="h6" align="center" color="default">
+                There are no users registered
+              </Typography>
+            :
+              <List >
+                {this.state.users.user_list.map(user => (
+                  <ListItemComponent
+                    uuid={uuidv4()}
+                    user={user}
+                    redirectToEdit={this.redirectToEdit}
+                    performDelete={this.performDelete}
+                  />
+                ))}'
+              </List>
+          }
         </div>
       );
     }
