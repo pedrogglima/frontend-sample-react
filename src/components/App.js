@@ -13,13 +13,20 @@ import { client } from '../lib/Client';
 
 class App extends Component {
   state = {
-    isLoggedIn: client.isLoggedIn(),
+    admin: {
+      // Only for ilustrative purpose - the API doesn't support admin users
+      login: 'admin',
+      avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/mrmoiree/128.jpg',
+      isLoggedIn: client.isLoggedIn(),
+    }
   }
 
   performLogin = async (login, password) => {
     try {
       await client.login(login, password);
-      this.setState({ isLoggedIn: true });
+      this.setState({
+        admin: Object.assign(this.state.admin, { isLoggedIn: true })
+      });
     } catch (err) {
       throw err;
     }
@@ -27,7 +34,9 @@ class App extends Component {
 
   performLogout = () => {
     client.logout();
-    this.setState({ isLoggedIn: false });
+    this.setState({
+      admin: Object.assign(this.state.admin, { isLoggedIn: false })
+    });
   }
 
   noMatch = ({ location }) => (
@@ -41,7 +50,7 @@ class App extends Component {
     return(
       <Grid container>
         <Header
-          isLoggedIn={this.state.isLoggedIn}
+          admin={this.state.admin}
           onLogoutClick={this.performLogout}
         />
         <main style={{flexGrow:1}}>
