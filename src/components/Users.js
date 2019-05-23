@@ -6,47 +6,12 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
+import uuidv4 from 'uuid/v4';
 
 import CustomizedSnackbar from './shared/CustomizedSnackbar';
 import Progress from './shared/Progress';
 import { client } from '../lib/Client';
-
-const USER = {
-  id: 1,
-  first_name: "George",
-  last_name: "Bluth",
-  avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/olegpogodaev/128.jpg"
-}
-
-const USERS = {
-  user_page: 1,
-  user_per_page: 3,
-  user_total: 12,
-  user_total_pages: 4,
-  user_list: [
-    {
-      id:1,
-      email: "george.bluth@reqres.in",
-      first_name: "George",
-      last_name: "Bluth",
-      avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/calebogden/128.jpg"
-    },
-    {
-      id: 2,
-      email: "janet.weaver@reqres.in",
-      first_name: "Janet",
-      last_name: "Weaver",
-      avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/josephstein/128.jpg"
-    },
-    {
-      id: 3,
-      email: "emma.wong@reqres.in",
-      first_name: "Emma",
-      last_name: "Wong",
-      avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/olegpogodaev/128.jpg"
-    }
-  ]
-}
+import { user, users } from '../data/User'
 
 const ListItemComponent = (props) => {
   const onEditClick = () => {
@@ -58,7 +23,7 @@ const ListItemComponent = (props) => {
   };
 
   return (
-    <ListItem key={props.user.id} button>
+    <ListItem key={props.uuid} button>
       <ListItemAvatar>
         <Avatar
           alt={'Avatar'}
@@ -101,7 +66,7 @@ class Users extends Component {
       // const users = await client.findByPage();
       this.setState({
         inProgress: false,
-        users: USERS,
+        users: users(),
         //users: users,
       });
     } catch (err) {
@@ -130,7 +95,7 @@ class Users extends Component {
       this.props.history.push({
         pathname: '/users/' + id,
         //state: { user: user }
-        state: { user: USER }
+        state: { user: user() }
       })
 
       this.setState({ inProgress: false });
@@ -150,7 +115,7 @@ class Users extends Component {
   performDelete = async (id) => {
     try {
       this.setState({ inProgress: true });
-      //await client.deleteById(id);
+      await client.deleteById(id);
 
       this.setState({
         inProgress: false,
@@ -201,6 +166,7 @@ class Users extends Component {
           <List >
             {this.state.users.user_list.map(user => (
               <ListItemComponent
+                uuid={uuidv4()}
                 user={user}
                 redirectToEdit={this.redirectToEdit}
                 performDelete={this.performDelete}
