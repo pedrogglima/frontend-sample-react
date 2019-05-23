@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 
-import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import IconButton from '@material-ui/core/IconButton';
 
@@ -49,7 +48,7 @@ const styles = theme => ({
   },
 });
 
-const SnackbarContent = (props) => {
+const CustomSnackbarContent = (props) => {
   const { classes, className, message, onClose, variant, ...other } = props;
   const Icon = variantIcon[variant];
 
@@ -79,7 +78,7 @@ const SnackbarContent = (props) => {
   );
 }
 
-SnackbarContent.propTypes = {
+CustomSnackbarContent.propTypes = {
   classes: PropTypes.object.isRequired,
   className: PropTypes.string,
   message: PropTypes.node,
@@ -87,4 +86,4 @@ SnackbarContent.propTypes = {
   variant: PropTypes.oneOf(['success', 'warning', 'error', 'info']).isRequired,
 };
 
-export const SnackbarContentWrapper = withStyles(styles)(SnackbarContent);
+export default withStyles(styles)(CustomSnackbarContent);

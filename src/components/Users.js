@@ -7,6 +7,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 
+import CustomizedSnackbar from './shared/CustomizedSnackbar';
 import Progress from './shared/Progress';
 import { client } from '../lib/Client';
 
@@ -84,6 +85,11 @@ class Users extends Component {
   state = {
     inProgress: true,
     users: null,
+    hasMessage: false,
+    snackbar: {
+      variant: 'error',
+      message: 'unexpected error'
+    }
   };
 
   componentDidMount() {
@@ -99,15 +105,21 @@ class Users extends Component {
         //users: users,
       });
     } catch (err) {
-      this.setState({ inProgress: false });
-      console.log('Show users error message: ' + err);
+      this.setState({
+        inProgress: false,
+        hasMessage: true,
+        snackbar: {
+          variant: 'error',
+          message: 'Error while loading the users, try later'
+        }
+      });
     }
   };
 
   redirectToEdit = async (id) => {
     try {
       this.setState({ inProgress: true });
-      const user = await client.findById(id);
+      //const user = await client.findById(id);
 
       // Observation
       // State passed throught the URL has a size limit e.g Firefox has
@@ -124,27 +136,47 @@ class Users extends Component {
       this.setState({ inProgress: false });
 
     } catch(err) {
-      this.setState({ inProgress: false });
-      console.log('Show user error message: ' + err);
+      this.setState({
+        inProgress: false,
+        hasMessage: true,
+        snackbar: {
+          variant: 'error',
+          message: 'Error while loading the user, try later'
+        }
+      });
     }
   }
 
   performDelete = async (id) => {
     try {
       this.setState({ inProgress: true });
-      await client.deleteById(id);
+      //await client.deleteById(id);
 
       this.setState({
         inProgress: false,
         users: Object.assign(this.state.users, {
           user_list: this.state.users.user_list.filter(u => u.id !== id)
-        })
+        }),
+        hasMessage: true,
+        snackbar: {
+          variant: 'success',
+          message: 'Successfully deleted'
+        }
       });
-
     } catch(err) {
-      this.setState({ inProgress: false });
-      console.log('Show user error message: ' + err);
+      this.setState({
+        inProgress: false,
+        hasMessage: true,
+        snackbar: {
+          variant: 'error',
+          message: 'Error while deleting the user'
+        }
+      });
     }
+  }
+
+  closeMessage = () => {
+    this.setState({ hasMessage: false });
   }
 
   // Missing
@@ -156,15 +188,26 @@ class Users extends Component {
       );
     } else {
       return (
-        <List >
-          {this.state.users.user_list.map(user => (
-            <ListItemComponent
-              user={user}
-              redirectToEdit={this.redirectToEdit}
-              performDelete={this.performDelete}
-            />
-          ))}'
-        </List>
+        <div>
+          {
+            this.state.hasMessage ?
+              <CustomizedSnackbar
+                parentClose={this.closeMessage}
+                variant={this.state.snackbar.variant}
+                message={this.state.snackbar.message}
+              />
+            : null
+          }
+          <List >
+            {this.state.users.user_list.map(user => (
+              <ListItemComponent
+                user={user}
+                redirectToEdit={this.redirectToEdit}
+                performDelete={this.performDelete}
+              />
+            ))}'
+          </List>
+        </div>
       );
     }
   }
