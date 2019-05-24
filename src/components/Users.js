@@ -4,8 +4,8 @@ import Typography from '@material-ui/core/Typography';
 import ListWithPagination from './users/ListUsers';
 import CustomizedSnackbar from './shared/CustomizedSnackbar';
 import Progress from './shared/Progress';
-import { client } from '../lib/Client';
-import { user, findByPage } from '../data/User'
+import { UserApi } from '../lib/user';
+import { user, findByPage } from '../data/user'
 
 class Users extends Component {
   state = {
@@ -34,7 +34,7 @@ class Users extends Component {
   getUsers = async (offset = 0, page = 1) => {
     try {
       this.setState({ inProgress: true });
-      //const users = await client.findByPage(page);
+      //const users = await UserApi.findByPage(page);
       const users = findByPage(offset);
       this.setState({
         inProgress: false,
@@ -59,7 +59,7 @@ class Users extends Component {
   redirectToEdit = async (id) => {
     try {
       this.setState({ inProgress: true });
-      //const user = await client.findById(id);
+      //const user = await UserApi.findById(id);
 
       // Observation
       // State passed throught the URL has a size limit e.g Firefox has
@@ -91,7 +91,7 @@ class Users extends Component {
   performDelete = async (id) => {
     try {
       this.setState({ inProgress: true });
-      //await client.deleteById(id);
+      //await UserApi.deleteById(id);
 
       this.setState({
         inProgress: false,

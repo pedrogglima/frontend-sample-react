@@ -12,7 +12,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 import Progress from './shared/Progress';
 import CustomizedSnackbar from './shared/CustomizedSnackbar';
-import { client } from '../lib/Client';
+import { UserApi } from '../lib/user';
 
 const styles = theme => ({
   root: {
@@ -47,7 +47,7 @@ class User extends Component {
   performUpdate = async () => {
     try {
       this.setState({ inProgress: true });
-      await client.update(this.state.user);
+      await UserApi.update(this.state.user);
       this.setState({
         inProgress: false,
         hasMessage: true,

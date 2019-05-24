@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import { Route, Redirect, Switch } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 
@@ -9,7 +10,13 @@ import Logout from './Logout';
 import Users from './Users';
 import User from './User';
 
-import { client } from '../lib/Client';
+import { client } from '../lib/client';
+
+const styles = theme => ({
+  main: {
+    flexGrow: 1
+  },
+});
 
 class App extends Component {
   state = {
@@ -42,13 +49,15 @@ class App extends Component {
   );
 
   render() {
+    const { classes } = this.props;
+
     return(
       <Grid container>
         <Header
           isLoggedIn={this.state.isLoggedIn}
           onLogoutClick={this.performLogout}
         />
-        <main style={{flexGrow:1}}>
+        <main className={classes.main}>
           <Switch>
             <PrivateRoute path='/users/:id' component={User} />
             <PrivateRoute path='/users' component={Users} />
@@ -76,4 +85,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withStyles(styles)(App);

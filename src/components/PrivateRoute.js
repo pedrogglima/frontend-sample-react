@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
-import { client } from '../lib/Client';
+import { client } from '../lib/client';
 
 const PrivateRoute = ({ component, ...rest }) => (
   <Route {...rest} render={(props) => (
