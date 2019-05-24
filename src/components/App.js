@@ -3,7 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { Route, Redirect, Switch } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 
-import PrivateRoute from './PrivateRoute';
+import PrivateRoute from './shared/PrivateRoute';
 import Header from './shared/Header';
 import Login from './Login';
 import Logout from './Logout';
