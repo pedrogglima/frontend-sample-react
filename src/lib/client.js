@@ -5,7 +5,7 @@ const LOCAL_STORAGE_KEY = 'frontend-fake-auth';
 
 class Client {
   constructor() {
-    this.useLocalStorage = (typeof localStorage !== 'undefined');
+    this.useLocalStorage = typeof localStorage !== 'undefined';
     this.urlApi = 'https://reqres.in/api';
     this.delayApi = 'delay=3';
 
@@ -18,15 +18,15 @@ class Client {
 
   isLoggedIn = () => {
     return !!this.token;
-  }
+  };
 
-  setToken = (token) => {
+  setToken = token => {
     this.token = token;
 
     if (this.useLocalStorage) {
       localStorage.setItem(LOCAL_STORAGE_KEY, token);
     }
-  }
+  };
 
   removeToken = () => {
     this.token = null;
@@ -34,11 +34,11 @@ class Client {
     if (this.useLocalStorage) {
       localStorage.removeItem(LOCAL_STORAGE_KEY);
     }
-  }
+  };
 
   logout = () => {
     this.removeToken();
-  }
+  };
 
   login = async (email, password) => {
     try {
@@ -56,7 +56,7 @@ class Client {
     } catch (err) {
       throw err;
     }
-  }
+  };
 }
 
 export const client = new Client();

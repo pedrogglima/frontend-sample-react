@@ -14,32 +14,32 @@ import { client } from '../lib/client';
 
 const styles = theme => ({
   main: {
-    flexGrow: 1
+    flexGrow: 1,
   },
 });
 
 class App extends Component {
   state = {
     isLoggedIn: client.isLoggedIn(),
-  }
+  };
 
   performLogin = async (login, password) => {
     try {
       await client.login(login, password);
       this.setState({
-        isLoggedIn: true
+        isLoggedIn: true,
       });
     } catch (err) {
       throw err;
     }
-  }
+  };
 
   performLogout = () => {
     client.logout();
     this.setState({
-      isLoggedIn: false
+      isLoggedIn: false,
     });
-  }
+  };
 
   noMatch = ({ location }) => (
     <div>
@@ -51,7 +51,7 @@ class App extends Component {
   render() {
     const { classes } = this.props;
 
-    return(
+    return (
       <Grid container>
         <Header
           isLoggedIn={this.state.isLoggedIn}
@@ -59,23 +59,16 @@ class App extends Component {
         />
         <main className={classes.main}>
           <Switch>
-            <PrivateRoute path='/users/:id' component={User} />
-            <PrivateRoute path='/users' component={Users} />
+            <PrivateRoute path="/users/:id" component={User} />
+            <PrivateRoute path="/users" component={Users} />
             <Route
-              path='/login'
-              render={(props) =>
-                <Login
-                  {...props}
-                  performLogin={this.performLogin}
-                />
-              }
+              path="/login"
+              render={props => (
+                <Login {...props} performLogin={this.performLogin} />
+              )}
             />
-            <Route path='/logout' component={Logout} />
-            <Route exact path='/' render={() => (
-              <Redirect
-                to='/users'
-              />
-            )} />
+            <Route path="/logout" component={Logout} />
+            <Route exact path="/" render={() => <Redirect to="/users" />} />
 
             <Route component={this.noMatch} />
           </Switch>

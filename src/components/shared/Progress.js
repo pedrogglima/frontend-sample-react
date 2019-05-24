@@ -9,21 +9,21 @@ const styles = theme => ({
     height: '80vh',
     alignItems: 'center',
     justifyContent: 'center',
-  }
+  },
 });
 
-const Progress = (props) => {
-  const {classes} = props
+const Progress = props => {
+  const { classes } = props;
 
   return (
     <div className={classes.root}>
       <CircularProgress />
     </div>
   );
-}
+};
 
 Progress.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(Progress);

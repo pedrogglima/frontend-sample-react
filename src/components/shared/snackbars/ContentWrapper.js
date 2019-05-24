@@ -45,7 +45,7 @@ const styles = theme => ({
   },
 });
 
-const CustomSnackbarContent = (props) => {
+const CustomSnackbarContent = props => {
   const { classes, className, message, onClose, variant } = props;
   const Icon = variantIcon[variant];
 
@@ -56,7 +56,7 @@ const CustomSnackbarContent = (props) => {
       message={
         <span id="client-snackbar" className={classes.message}>
           <Icon className={classNames(classes.icon, classes.iconVariant)} />
-            {message}
+          {message}
         </span>
       }
       action={[
@@ -72,7 +72,7 @@ const CustomSnackbarContent = (props) => {
       ]}
     />
   );
-}
+};
 
 CustomSnackbarContent.propTypes = {
   classes: PropTypes.object.isRequired,

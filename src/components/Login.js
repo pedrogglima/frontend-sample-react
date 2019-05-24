@@ -15,14 +15,14 @@ import CustomizedSnackbar from './shared/CustomizedSnackbar';
 
 const styles = theme => ({
   root: {
-    marginTop: '30px'
+    marginTop: '30px',
   },
   buttonWrapper: {
     width: '100%',
-    marginTop: '10px'
+    marginTop: '10px',
   },
   button: {
-    width: '100%'
+    width: '100%',
   },
 });
 
@@ -33,15 +33,15 @@ class Login extends Component {
     hasMessage: false,
     user: {
       login: '',
-      password: ''
+      password: '',
     },
     snackbar: {
       variant: 'error',
-      message: 'unexpected error'
-    }
+      message: 'unexpected error',
+    },
   };
 
-  onInputChange = (evt) => {
+  onInputChange = evt => {
     const user = this.state.user;
     user[evt.target.name] = evt.target.value;
     this.setState({ user });
@@ -57,15 +57,14 @@ class Login extends Component {
       );
 
       this.setState({ shouldRedirect: true });
-
     } catch (err) {
       this.setState({
         InProgress: false,
         hasMessage: true,
         snackbar: {
           variant: 'error',
-          message: 'Error while trying to log in'
-        }
+          message: 'Error while trying to log in',
+        },
       });
       console.log(err);
     }
@@ -73,52 +72,43 @@ class Login extends Component {
 
   redirectPath = () => {
     const locationState = this.props.location.state;
-    const pathname = (
-      locationState && locationState.from && locationState.from.pathname
-    );
+    const pathname =
+      locationState && locationState.from && locationState.from.pathname;
     return pathname || '/users';
   };
 
   closeMessage = () => {
     this.setState({ hasMessage: false });
-  }
+  };
 
   render() {
     const { classes } = this.props;
 
     if (this.state.shouldRedirect) {
-      return (
-        <Redirect to={this.redirectPath()} />
-      );
+      return <Redirect to={this.redirectPath()} />;
     } else if (this.state.InProgress) {
-      return (
-        <Progress />
-      );
+      return <Progress />;
     } else {
       return (
         <Grid container className={classes.root}>
-          <Grid item xs={2} xl={2} sm={4} md={4} lg={4}></Grid>
+          <Grid item xs={2} xl={2} sm={4} md={4} lg={4} />
           <Grid item xs={8} xl={8} sm={4} md={4} lg={4}>
-            {
-              this.state.hasMessage ?
-                <CustomizedSnackbar
-                  parentClose={this.closeMessage}
-                  variant={this.state.snackbar.variant}
-                  message={this.state.snackbar.message}
-                />
-              : null
-            }
-            <Card>
-              <CardHeader
-                title="Login"
+            {this.state.hasMessage ? (
+              <CustomizedSnackbar
+                parentClose={this.closeMessage}
+                variant={this.state.snackbar.variant}
+                message={this.state.snackbar.message}
               />
+            ) : null}
+            <Card>
+              <CardHeader title="Login" />
               <CardContent>
                 <div>
                   <FormControl required margin="normal" fullWidth>
                     <InputLabel htmlFor="component-simple">Login</InputLabel>
                     <Input
                       id="input_login_id"
-                      name='login'
+                      name="login"
                       value={this.state.user.login}
                       onChange={this.onInputChange}
                     />
@@ -129,7 +119,7 @@ class Login extends Component {
                     <InputLabel htmlFor="component-simple">Password</InputLabel>
                     <Input
                       id="input_password_id"
-                      name='password'
+                      name="password"
                       type="password"
                       value={this.state.user.password}
                       onChange={this.onInputChange}
@@ -137,7 +127,7 @@ class Login extends Component {
                   </FormControl>
                   <small>password: 1234</small>
 
-                  <div className={classes.buttonWrapper} >
+                  <div className={classes.buttonWrapper}>
                     <Button
                       variant="contained"
                       color="primary"
@@ -152,7 +142,7 @@ class Login extends Component {
               </CardContent>
             </Card>
           </Grid>
-          <Grid item xs={2} xl={2} sm={4} md={4} lg={4}></Grid>
+          <Grid item xs={2} xl={2} sm={4} md={4} lg={4} />
         </Grid>
       );
     }
@@ -161,7 +151,7 @@ class Login extends Component {
 
 Login.propTypes = {
   classes: PropTypes.object.isRequired,
-  performLogin: PropTypes.func.isRequired
+  performLogin: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(Login);

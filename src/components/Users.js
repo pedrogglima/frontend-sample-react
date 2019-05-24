@@ -5,7 +5,7 @@ import ListWithPagination from './users/ListUsers';
 import CustomizedSnackbar from './shared/CustomizedSnackbar';
 import Progress from './shared/Progress';
 import { UserApi } from '../lib/user';
-import { user, findByPage } from '../data/user'
+import { user, findByPage } from '../data/user';
 
 class Users extends Component {
   state = {
@@ -16,15 +16,15 @@ class Users extends Component {
       per_page: 0,
       total: 0,
       total_pages: 0,
-      data: []
+      data: [],
     },
     pagination: {
       offset: 0,
     },
     snackbar: {
       variant: 'error',
-      message: 'unexpected error'
-    }
+      message: 'unexpected error',
+    },
   };
 
   componentDidMount() {
@@ -40,8 +40,8 @@ class Users extends Component {
         inProgress: false,
         users: users,
         pagination: {
-          offset: offset
-        }
+          offset: offset,
+        },
       });
     } catch (err) {
       this.setState({
@@ -49,14 +49,14 @@ class Users extends Component {
         hasMessage: true,
         snackbar: {
           variant: 'error',
-          message: 'Error while loading the users, try later'
-        }
+          message: 'Error while loading the users, try later',
+        },
       });
       console.log(err);
     }
   };
 
-  redirectToEdit = async (id) => {
+  redirectToEdit = async id => {
     try {
       this.setState({ inProgress: true });
       //const user = await UserApi.findById(id);
@@ -70,25 +70,24 @@ class Users extends Component {
       this.props.history.push({
         pathname: '/users/' + id,
         //state: { user: user }
-        state: { user: user() }
-      })
+        state: { user: user() },
+      });
 
       this.setState({ inProgress: false });
-
-    } catch(err) {
+    } catch (err) {
       this.setState({
         inProgress: false,
         hasMessage: true,
         snackbar: {
           variant: 'error',
-          message: 'Error while loading the user, try later'
-        }
+          message: 'Error while loading the user, try later',
+        },
       });
       console.log(err);
     }
-  }
+  };
 
-  performDelete = async (id) => {
+  performDelete = async id => {
     try {
       this.setState({ inProgress: true });
       //await UserApi.deleteById(id);
@@ -96,66 +95,61 @@ class Users extends Component {
       this.setState({
         inProgress: false,
         users: Object.assign(this.state.users, {
-          data: this.state.users.data.filter(u => u.id !== id)
+          data: this.state.users.data.filter(u => u.id !== id),
         }),
         hasMessage: true,
         snackbar: {
           variant: 'success',
-          message: 'Successfully deleted'
-        }
+          message: 'Successfully deleted',
+        },
       });
-    } catch(err) {
+    } catch (err) {
       this.setState({
         inProgress: false,
         hasMessage: true,
         snackbar: {
           variant: 'error',
-          message: 'Error while deleting the user'
-        }
+          message: 'Error while deleting the user',
+        },
       });
       console.log(err);
     }
-  }
+  };
 
-  performPageChange = (offset) => {
+  performPageChange = offset => {
     this.getUsers(offset);
-  }
+  };
 
   closeMessage = () => {
     this.setState({ hasMessage: false });
-  }
+  };
 
   render() {
     if (this.state.inProgress) {
-      return (
-        <Progress />
-      );
+      return <Progress />;
     } else {
       return (
         <div>
-          {
-            this.state.hasMessage ?
-              <CustomizedSnackbar
-                parentClose={this.closeMessage}
-                variant={this.state.snackbar.variant}
-                message={this.state.snackbar.message}
-              />
-            : null
-          }
-          {
-            this.state.users.data.length === 0 ?
-              <Typography variant="h6" align="center" color="default">
-                There are no users registered
-              </Typography>
-            :
-              <ListWithPagination
-                users={this.state.users}
-                pagination={this.state.pagination}
-                redirectToEdit={this.redirectToEdit}
-                performDelete={this.performDelete}
-                performPageChange={this.performPageChange}
-              />
-          }
+          {this.state.hasMessage ? (
+            <CustomizedSnackbar
+              parentClose={this.closeMessage}
+              variant={this.state.snackbar.variant}
+              message={this.state.snackbar.message}
+            />
+          ) : null}
+          {this.state.users.data.length === 0 ? (
+            <Typography variant="h6" align="center" color="default">
+              There are no users registered
+            </Typography>
+          ) : (
+            <ListWithPagination
+              users={this.state.users}
+              pagination={this.state.pagination}
+              redirectToEdit={this.redirectToEdit}
+              performDelete={this.performDelete}
+              performPageChange={this.performPageChange}
+            />
+          )}
         </div>
       );
     }

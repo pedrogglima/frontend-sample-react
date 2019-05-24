@@ -11,23 +11,23 @@ import PeopleIcon from '@material-ui/icons/People';
 
 const styles = theme => ({
   root: {
-    display: 'flex'
+    display: 'flex',
   },
   logo: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   icon: {
-    color: 'white'
-  }
+    color: 'white',
+  },
 });
 
-const Header = (props) => {
-  const {classes} = props
+const Header = props => {
+  const { classes } = props;
 
   const onRedirectTo = () => {
     props.history.push({
-      pathname: '/users'
-    })
+      pathname: '/users',
+    });
   };
 
   return (
@@ -36,28 +36,24 @@ const Header = (props) => {
         <Typography variant="h6" color="inherit" className={classes.logo}>
           Frontend
         </Typography>
-        {
-          props.isLoggedIn ? (
-            <div className={classes.root}>
-              <IconButton
-                aria-label="USERS"
-                className={classes.icon}
-                onClick={onRedirectTo}
-              >
-                <PeopleIcon className="material-icons" />
-              </IconButton>
-              <IconButton
-                aria-label="LOGOUT"
-                className={classes.icon}
-                onClick={props.onLogoutClick}
-              >
-                <ExitToAppIcon className="material-icons" />
-              </IconButton>
-            </div>
-          ) : (
-            null
-          )
-        }
+        {props.isLoggedIn ? (
+          <div className={classes.root}>
+            <IconButton
+              aria-label="USERS"
+              className={classes.icon}
+              onClick={onRedirectTo}
+            >
+              <PeopleIcon className="material-icons" />
+            </IconButton>
+            <IconButton
+              aria-label="LOGOUT"
+              className={classes.icon}
+              onClick={props.onLogoutClick}
+            >
+              <ExitToAppIcon className="material-icons" />
+            </IconButton>
+          </div>
+        ) : null}
       </Toolbar>
     </AppBar>
   );

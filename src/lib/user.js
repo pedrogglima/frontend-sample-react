@@ -17,13 +17,13 @@ class User {
         total: resp.total,
         total_pages: resp.total_pages,
         data: resp.data,
-      }
+      };
     } catch (err) {
       throw err;
     }
-  }
+  };
 
-  findById = async (id) => {
+  findById = async id => {
     try {
       const url = this.urlApi + `/users/${id}?` + this.delayApi;
       const resp = await fetchJSON(url);
@@ -33,13 +33,13 @@ class User {
         first_name: resp.data.first_name,
         last_name: resp.data.last_name,
         avatar: resp.data.avatar,
-      }
+      };
     } catch (err) {
       throw err;
     }
-  }
+  };
 
-  update = async (user) => {
+  update = async user => {
     try {
       const url = this.urlApi + `/users/${user.id}?` + this.delayApi;
       await fetchJSON(
@@ -53,16 +53,16 @@ class User {
     } catch (err) {
       throw err;
     }
-  }
+  };
 
-  deleteById = async (id) => {
+  deleteById = async id => {
     try {
       const url = this.urlApi + `/users/${id}?` + this.delayApi;
       await fetchJSON(url);
     } catch (err) {
       throw err;
     }
-  }
+  };
 }
 
 export const UserApi = new User();

@@ -15,15 +15,15 @@ import { UserApi } from '../lib/user';
 
 const styles = theme => ({
   root: {
-    marginTop: '30px'
+    marginTop: '30px',
   },
   buttonWrapper: {
     width: '100%',
-    marginTop: '10px'
+    marginTop: '10px',
   },
   button: {
-    width: '100%'
-  }
+    width: '100%',
+  },
 });
 
 class User extends Component {
@@ -33,11 +33,11 @@ class User extends Component {
     user: this.props.location.state.user,
     snackbar: {
       variant: 'error',
-      message: 'unexpected error'
-    }
+      message: 'unexpected error',
+    },
   };
 
-  onInputChange = (evt) => {
+  onInputChange = evt => {
     const user = this.state.user;
     user[evt.target.name] = evt.target.value;
     this.setState({ user });
@@ -52,18 +52,17 @@ class User extends Component {
         hasMessage: true,
         snackbar: {
           variant: 'success',
-          message: 'Successfully updated'
-        }
+          message: 'Successfully updated',
+        },
       });
-
     } catch (err) {
       this.setState({
         inProgress: false,
         hasMessage: true,
         snackbar: {
           variant: 'error',
-          message: 'Error while trying to update'
-        }
+          message: 'Error while trying to update',
+        },
       });
       console.log(err);
     }
@@ -71,50 +70,48 @@ class User extends Component {
 
   closeMessage = () => {
     this.setState({ hasMessage: false });
-  }
+  };
 
   render() {
     const { classes } = this.props;
 
     if (this.state.inProgress) {
-      return (
-        <Progress />
-      );
+      return <Progress />;
     } else {
       return (
         <Grid container className={classes.root}>
-          <Grid item xs={2} xl={2} sm={4} md={4} lg={4}></Grid>
+          <Grid item xs={2} xl={2} sm={4} md={4} lg={4} />
           <Grid item xs={8} xl={8} sm={4} md={4} lg={4}>
-            {
-              this.state.hasMessage ?
-                <CustomizedSnackbar
-                  parentClose={this.closeMessage}
-                  variant={this.state.snackbar.variant}
-                  message={this.state.snackbar.message}
-                />
-              : null
-            }
-            <Card>
-              <CardHeader
-                title="Editar"
+            {this.state.hasMessage ? (
+              <CustomizedSnackbar
+                parentClose={this.closeMessage}
+                variant={this.state.snackbar.variant}
+                message={this.state.snackbar.message}
               />
+            ) : null}
+            <Card>
+              <CardHeader title="Editar" />
               <CardContent>
                 <div>
                   <FormControl required margin="normal" fullWidth>
-                    <InputLabel htmlFor="component-simple">First name</InputLabel>
+                    <InputLabel htmlFor="component-simple">
+                      First name
+                    </InputLabel>
                     <Input
                       id="input_first_name_id"
-                      name='first_name'
+                      name="first_name"
                       value={this.state.user.first_name}
                       onChange={this.onInputChange}
                     />
                   </FormControl>
 
                   <FormControl required margin="normal" fullWidth>
-                    <InputLabel htmlFor="component-simple">Last name</InputLabel>
+                    <InputLabel htmlFor="component-simple">
+                      Last name
+                    </InputLabel>
                     <Input
                       id="input_last_name_id"
-                      name='last_name'
+                      name="last_name"
                       value={this.state.user.last_name}
                       onChange={this.onInputChange}
                     />
@@ -135,7 +132,7 @@ class User extends Component {
               </CardContent>
             </Card>
           </Grid>
-          <Grid item xs={2} xl={2} sm={4} md={4} lg={4}></Grid>
+          <Grid item xs={2} xl={2} sm={4} md={4} lg={4} />
         </Grid>
       );
     }
@@ -146,8 +143,8 @@ User.propTypes = {
   classes: PropTypes.object.isRequired,
   location: PropTypes.shape({
     state: PropTypes.shape({
-      user: PropTypes.object.isRequired
-    })
+      user: PropTypes.object.isRequired,
+    }),
   }),
 };
 
