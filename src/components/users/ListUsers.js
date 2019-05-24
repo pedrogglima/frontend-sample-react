@@ -75,11 +75,13 @@ const ListWithPagination = (props) => {
            />
          ))}
        </List>
+       <hr className={'custom-hr'} />
        <div>
-         <Pagination
+          <Pagination
             limit={props.users.per_page}
             offset={props.pagination.offset}
             total={props.users.total}
+            classes={{root: 'custom-pagination'}}
             onClick={onPageClick}
          />
        </div>
