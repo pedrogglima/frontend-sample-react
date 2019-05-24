@@ -59,4 +59,4 @@ class Client {
   };
 }
 
-export const client = new Client();
+export const ClientApi = new Client();

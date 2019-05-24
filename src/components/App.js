@@ -10,7 +10,7 @@ import Logout from './Logout';
 import Users from './Users';
 import User from './User';
 
-import { client } from '../lib/client';
+import { ClientApi } from '../lib/client';
 
 const styles = theme => ({
   main: {
@@ -20,12 +20,12 @@ const styles = theme => ({
 
 class App extends Component {
   state = {
-    isLoggedIn: client.isLoggedIn(),
+    isLoggedIn: ClientApi.isLoggedIn(),
   };
 
   performLogin = async (login, password) => {
     try {
-      await client.login(login, password);
+      await ClientApi.login(login, password);
       this.setState({
         isLoggedIn: true,
       });
@@ -35,7 +35,7 @@ class App extends Component {
   };
 
   performLogout = () => {
-    client.logout();
+    ClientApi.logout();
     this.setState({
       isLoggedIn: false,
     });

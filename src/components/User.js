@@ -80,8 +80,8 @@ class User extends Component {
     } else {
       return (
         <Grid container className={classes.root}>
-          <Grid item xs={2} xl={2} sm={4} md={4} lg={4} />
-          <Grid item xs={8} xl={8} sm={4} md={4} lg={4}>
+          <Grid item xs={1} sm={2} md={3} lg={3} xl={4} />
+          <Grid item xs={10} sm={8} md={6} lg={6} xl={4}>
             {this.state.hasMessage ? (
               <CustomizedSnackbar
                 parentClose={this.closeMessage}
@@ -132,7 +132,7 @@ class User extends Component {
               </CardContent>
             </Card>
           </Grid>
-          <Grid item xs={2} xl={2} sm={4} md={4} lg={4} />
+          <Grid item xs={1} sm={2} md={3} lg={3} xl={4} />
         </Grid>
       );
     }
