@@ -11,6 +11,7 @@ import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 import Progress from './shared/Progress';
+import CustomizedSnackbar from './shared/CustomizedSnackbar';
 
 const styles = theme => ({
   root: {
@@ -27,11 +28,16 @@ const styles = theme => ({
 
 class Login extends Component {
   state = {
-    loginInProgress: false,
+    InProgress: false,
     shouldRedirect: false,
+    hasMessage: false,
     user: {
       login: '',
       password: ''
+    },
+    snackbar: {
+      variant: 'error',
+      message: 'unexpected error'
     }
   };
 
@@ -42,18 +48,26 @@ class Login extends Component {
   };
 
   onLoginClick = async () => {
-    this.setState({ loginInProgress: true });
-
     try {
+      this.setState({ InProgress: true });
+
       await this.props.performLogin(
         this.state.user.login,
         this.state.user.password
       );
+
       this.setState({ shouldRedirect: true });
 
     } catch (err) {
-      this.setState({ loginInProgress: false });
-      console.log('show error message: ' + err);
+      this.setState({
+        InProgress: false,
+        hasMessage: true,
+        snackbar: {
+          variant: 'error',
+          message: 'Error while trying to log in'
+        }
+      });
+      console.log(err);
     }
   };
 
@@ -65,6 +79,10 @@ class Login extends Component {
     return pathname || '/users';
   };
 
+  closeMessage = () => {
+    this.setState({ hasMessage: false });
+  }
+
   render() {
     const { classes } = this.props;
 
@@ -72,57 +90,65 @@ class Login extends Component {
       return (
         <Redirect to={this.redirectPath()} />
       );
+    } else if (this.state.InProgress) {
+      return (
+        <Progress />
+      );
     } else {
       return (
         <Grid container className={classes.root}>
           <Grid item xs={2} xl={2} sm={4} md={4} lg={4}></Grid>
           <Grid item xs={8} xl={8} sm={4} md={4} lg={4}>
+            {
+              this.state.hasMessage ?
+                <CustomizedSnackbar
+                  parentClose={this.closeMessage}
+                  variant={this.state.snackbar.variant}
+                  message={this.state.snackbar.message}
+                />
+              : null
+            }
             <Card>
               <CardHeader
                 title="Login"
               />
               <CardContent>
-                {
-                  this.state.loginInProgress ? (
-                    <Progress />
-                  ) : (
-                    <div>
-                      <FormControl required margin="normal" fullWidth>
-                        <InputLabel htmlFor="component-simple">Login</InputLabel>
-                        <Input
-                          id="input_login_id"
-                          name='login'
-                          value={this.state.user.login}
-                          onChange={this.onInputChange}
-                        />
-                      </FormControl>
-                      <small>login: eve.holt@reqres.in</small>
+                <div>
+                  <FormControl required margin="normal" fullWidth>
+                    <InputLabel htmlFor="component-simple">Login</InputLabel>
+                    <Input
+                      id="input_login_id"
+                      name='login'
+                      value={this.state.user.login}
+                      onChange={this.onInputChange}
+                    />
+                  </FormControl>
+                  <small>login: eve.holt@reqres.in</small>
 
-                      <FormControl required margin="normal" fullWidth>
-                        <InputLabel htmlFor="component-simple">Password</InputLabel>
-                        <Input
-                          id="input_password_id"
-                          name='password'
-                          value={this.state.user.password}
-                          onChange={this.onInputChange}
-                        />
-                      </FormControl>
-                      <small>password: 1234</small>
+                  <FormControl required margin="normal" fullWidth>
+                    <InputLabel htmlFor="component-simple">Password</InputLabel>
+                    <Input
+                      id="input_password_id"
+                      name='password'
+                      type="password"
+                      value={this.state.user.password}
+                      onChange={this.onInputChange}
+                    />
+                  </FormControl>
+                  <small>password: 1234</small>
 
-                      <div className={classes.buttonWrapper} >
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          size="large"
-                          className={classes.button}
-                          onClick={this.onLoginClick}
-                        >
-                          Log in
-                        </Button>
-                      </div>
-                    </div>
-                  )
-                }
+                  <div className={classes.buttonWrapper} >
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      size="large"
+                      className={classes.button}
+                      onClick={this.onLoginClick}
+                    >
+                      Log in
+                    </Button>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </Grid>

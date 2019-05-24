@@ -52,6 +52,7 @@ class Users extends Component {
           message: 'Error while loading the users, try later'
         }
       });
+      console.log(err);
     }
   };
 
@@ -83,6 +84,7 @@ class Users extends Component {
           message: 'Error while loading the user, try later'
         }
       });
+      console.log(err);
     }
   }
 
@@ -111,6 +113,7 @@ class Users extends Component {
           message: 'Error while deleting the user'
         }
       });
+      console.log(err);
     }
   }
 

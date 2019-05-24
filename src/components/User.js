@@ -11,7 +11,7 @@ import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 import Progress from './shared/Progress';
-
+import CustomizedSnackbar from './shared/CustomizedSnackbar';
 import { client } from '../lib/Client';
 
 const styles = theme => ({
@@ -30,8 +30,12 @@ const styles = theme => ({
 class User extends Component {
   state = {
     inProgress: false,
-    shouldRedirect: false,
+    hasMessage: false,
     user: this.props.location.state.user,
+    snackbar: {
+      variant: 'error',
+      message: 'unexpected error'
+    }
   };
 
   onInputChange = (evt) => {
@@ -43,70 +47,92 @@ class User extends Component {
   performUpdate = async () => {
     try {
       this.setState({ inProgress: true });
-      //await client.update(this.state.user);
-      this.setState({ shouldRedirect: true });
+      await client.update(this.state.user);
+      this.setState({
+        inProgress: false,
+        hasMessage: true,
+        snackbar: {
+          variant: 'success',
+          message: 'Successfully updated'
+        }
+      });
+
     } catch (err) {
-      this.setState({ inProgress: false });
-      console.log('Show user error message: ' + err);
+      this.setState({
+        inProgress: false,
+        hasMessage: true,
+        snackbar: {
+          variant: 'error',
+          message: 'Error while trying to update'
+        }
+      });
+      console.log(err);
     }
   };
+
+  closeMessage = () => {
+    this.setState({ hasMessage: false });
+  }
 
   render() {
     const { classes } = this.props;
 
-    if (this.state.shouldRedirect) {
+    if (this.state.inProgress) {
       return (
-        <Redirect to={'/users'} />
+        <Progress />
       );
     } else {
       return (
         <Grid container className={classes.root}>
           <Grid item xs={2} xl={2} sm={4} md={4} lg={4}></Grid>
           <Grid item xs={8} xl={8} sm={4} md={4} lg={4}>
+            {
+              this.state.hasMessage ?
+                <CustomizedSnackbar
+                  parentClose={this.closeMessage}
+                  variant={this.state.snackbar.variant}
+                  message={this.state.snackbar.message}
+                />
+              : null
+            }
             <Card>
               <CardHeader
                 title="Editar"
               />
               <CardContent>
-                {
-                  this.state.inProgress ? (
-                    <Progress />
-                  ) : (
-                    <div>
-                      <FormControl required margin="normal" fullWidth>
-                        <InputLabel htmlFor="component-simple">First name</InputLabel>
-                        <Input
-                          id="input_first_name_id"
-                          name='first_name'
-                          value={this.state.user.first_name}
-                          onChange={this.onInputChange}
-                        />
-                      </FormControl>
+                <div>
+                  <FormControl required margin="normal" fullWidth>
+                    <InputLabel htmlFor="component-simple">First name</InputLabel>
+                    <Input
+                      id="input_first_name_id"
+                      name='first_name'
+                      value={this.state.user.first_name}
+                      onChange={this.onInputChange}
+                    />
+                  </FormControl>
 
-                      <FormControl required margin="normal" fullWidth>
-                        <InputLabel htmlFor="component-simple">Last name</InputLabel>
-                        <Input
-                          id="input_last_name_id"
-                          name='last_name'
-                          value={this.state.user.last_name}
-                          onChange={this.onInputChange}
-                        />
-                      </FormControl>
+                  <FormControl required margin="normal" fullWidth>
+                    <InputLabel htmlFor="component-simple">Last name</InputLabel>
+                    <Input
+                      id="input_last_name_id"
+                      name='last_name'
+                      value={this.state.user.last_name}
+                      onChange={this.onInputChange}
+                    />
+                  </FormControl>
 
-                      <div className={classes.buttonWrapper}>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          size="large"
-                          className={classes.button}
-                          onClick={this.performUpdate}
-                        >
-                          Update
-                        </Button>
-                      </div>
-                    </div>
-                  )
-                }
+                  <div className={classes.buttonWrapper}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      size="large"
+                      className={classes.button}
+                      onClick={this.performUpdate}
+                    >
+                      Update
+                    </Button>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </Grid>

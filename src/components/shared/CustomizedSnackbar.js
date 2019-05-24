@@ -40,8 +40,8 @@ class CustomizedSnackbar extends React.Component {
 }
 
 CustomizedSnackbar.propTypes = {
-  parentClose: PropTypes.func,
-  message: PropTypes.node,
+  parentClose: PropTypes.func.isRequired,
+  message: PropTypes.node.isRequired,
   variant: PropTypes.oneOf(['success', 'warning', 'error', 'info']).isRequired,
 };
 

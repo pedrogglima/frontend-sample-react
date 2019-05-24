@@ -132,7 +132,7 @@ class Client {
 
       if (!response.ok) {
         const respBody = await response.json();
-        throw new Error('status: ' + response.status + ', message: ' + respBody.error);
+        throw new Error(respBody.error + ' (status code: ' + response.status + ')');
       }
 
       return await response.json();
