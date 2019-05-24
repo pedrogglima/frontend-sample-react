@@ -3,7 +3,7 @@ import { Route, Redirect, Switch } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 
 import PrivateRoute from './PrivateRoute';
-import Header from './Header';
+import Header from './shared/Header';
 import Login from './Login';
 import Logout from './Logout';
 import Users from './Users';
@@ -13,19 +13,14 @@ import { client } from '../lib/Client';
 
 class App extends Component {
   state = {
-    admin: {
-      // Only for ilustrative purpose - the API doesn't support admin users
-      login: 'admin',
-      avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/mrmoiree/128.jpg',
-      isLoggedIn: client.isLoggedIn(),
-    }
+    isLoggedIn: client.isLoggedIn(),
   }
 
   performLogin = async (login, password) => {
     try {
       await client.login(login, password);
       this.setState({
-        admin: Object.assign(this.state.admin, { isLoggedIn: true })
+        isLoggedIn: true
       });
     } catch (err) {
       throw err;
@@ -35,7 +30,7 @@ class App extends Component {
   performLogout = () => {
     client.logout();
     this.setState({
-      admin: Object.assign(this.state.admin, { isLoggedIn: false })
+      isLoggedIn: false
     });
   }
 
@@ -50,7 +45,7 @@ class App extends Component {
     return(
       <Grid container>
         <Header
-          admin={this.state.admin}
+          isLoggedIn={this.state.isLoggedIn}
           onLogoutClick={this.performLogout}
         />
         <main style={{flexGrow:1}}>

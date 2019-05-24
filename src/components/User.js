@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
@@ -12,9 +14,23 @@ import Progress from './shared/Progress';
 
 import { client } from '../lib/Client';
 
+const styles = theme => ({
+  root: {
+    marginTop: '30px'
+  },
+  buttonWrapper: {
+    width: '100%',
+    marginTop: '10px'
+  },
+  button: {
+    width: '100%'
+  }
+});
+
 class User extends Component {
   state = {
     inProgress: false,
+    shouldRedirect: false,
     user: this.props.location.state.user,
   };
 
@@ -36,13 +52,15 @@ class User extends Component {
   };
 
   render() {
+    const { classes } = this.props;
+
     if (this.state.shouldRedirect) {
       return (
         <Redirect to={'/users'} />
       );
     } else {
       return (
-        <Grid container style={{marginTop: '30px'}}>
+        <Grid container className={classes.root}>
           <Grid item xs={2} xl={2} sm={4} md={4} lg={4}></Grid>
           <Grid item xs={8} xl={8} sm={4} md={4} lg={4}>
             <Card>
@@ -55,7 +73,7 @@ class User extends Component {
                     <Progress />
                   ) : (
                     <div>
-                      <FormControl required={true} margin="normal" fullWidth={true}>
+                      <FormControl required margin="normal" fullWidth>
                         <InputLabel htmlFor="component-simple">First name</InputLabel>
                         <Input
                           id="input_first_name_id"
@@ -65,7 +83,7 @@ class User extends Component {
                         />
                       </FormControl>
 
-                      <FormControl required={true} margin="normal" fullWidth={true}>
+                      <FormControl required margin="normal" fullWidth>
                         <InputLabel htmlFor="component-simple">Last name</InputLabel>
                         <Input
                           id="input_last_name_id"
@@ -75,12 +93,12 @@ class User extends Component {
                         />
                       </FormControl>
 
-                      <div style={{ width: '100%', marginTop: '10px' }}>
+                      <div className={classes.buttonWrapper}>
                         <Button
                           variant="contained"
                           color="primary"
                           size="large"
-                          style={{ width: '100%' }}
+                          className={classes.button}
                           onClick={this.performUpdate}
                         >
                           Update
@@ -99,4 +117,13 @@ class User extends Component {
   }
 }
 
-export default User;
+User.propTypes = {
+  classes: PropTypes.object.isRequired,
+  location: PropTypes.shape({
+    state: PropTypes.shape({
+      user: PropTypes.object.isRequired
+    })
+  }),
+};
+
+export default withStyles(styles)(User);

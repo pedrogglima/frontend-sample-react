@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
-
 import ListWithPagination from './users/ListUsers';
 import CustomizedSnackbar from './shared/CustomizedSnackbar';
 import Progress from './shared/Progress';
@@ -158,5 +158,9 @@ class Users extends Component {
     }
   }
 }
+
+Users.propTypes = {
+  history: PropTypes.object.isRequired,
+};
 
 export default Users;

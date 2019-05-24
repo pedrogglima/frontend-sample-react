@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
@@ -11,7 +12,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import Pagination from "material-ui-flat-pagination";
 import uuidv4 from 'uuid/v4';
 
-const ListItemComponent = (props) => {
+const CustomizedListItem = (props) => {
   const onEditClick = () => {
     props.redirectToEdit(props.user.id);
   };
@@ -50,6 +51,13 @@ const ListItemComponent = (props) => {
   );
 }
 
+CustomizedListItem.propTypes = {
+  user: PropTypes.object.isRequired,
+  uuid: PropTypes.string.isRequired,
+  redirectToEdit: PropTypes.func.isRequired,
+  performDelete: PropTypes.func.isRequired
+};
+
 const ListWithPagination = (props) => {
    const onPageClick = (e, offset, page) => {
      props.performPageChange(offset, page);
@@ -59,7 +67,7 @@ const ListWithPagination = (props) => {
      <div>
        <List>
          {props.users.data.map(user => (
-           <ListItemComponent
+           <CustomizedListItem
              uuid={uuidv4()}
              user={user}
              redirectToEdit={props.redirectToEdit}
@@ -78,5 +86,12 @@ const ListWithPagination = (props) => {
      </div>
    );
 }
+
+ListWithPagination.propTypes = {
+  users: PropTypes.object.isRequired,
+  performPageChange: PropTypes.func.isRequired,
+  redirectToEdit: PropTypes.func.isRequired,
+  performDelete: PropTypes.func.isRequired
+};
 
 export default ListWithPagination;

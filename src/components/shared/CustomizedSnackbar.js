@@ -1,11 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-//import classNames from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
 import Snackbar from '@material-ui/core/Snackbar';
 import CustomizedSnackbarContent from './snackbars/ContentWrapper';
-
-const styles = theme => ({})
 
 class CustomizedSnackbar extends React.Component {
   state = {
@@ -34,8 +30,8 @@ class CustomizedSnackbar extends React.Component {
         >
           <CustomizedSnackbarContent
             onClose={this.handleClose}
-            variant={this.props.variant}
             message={this.props.message}
+            variant={this.props.variant}
           />
         </Snackbar>
       </div>
@@ -49,4 +45,4 @@ CustomizedSnackbar.propTypes = {
   variant: PropTypes.oneOf(['success', 'warning', 'error', 'info']).isRequired,
 };
 
-export default withStyles(styles)(CustomizedSnackbar);
+export default CustomizedSnackbar;

@@ -1,8 +1,7 @@
 import React from 'react';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-// import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const styles = theme => ({
   root: {
