@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { Route, Redirect, Switch } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
-
 import PrivateRoute from './shared/PrivateRoute';
 import Header from './shared/Header';
 import Login from './Login';
@@ -59,8 +58,16 @@ class App extends Component {
         />
         <main className={classes.main}>
           <Switch>
-            <PrivateRoute path="/users/:id" component={User} isLoggedIn={this.state.isLoggedIn} />
-            <PrivateRoute path="/users" component={Users} isLoggedIn={this.state.isLoggedIn} />
+            <PrivateRoute
+              path="/users/:id"
+              component={User}
+              isLoggedIn={this.state.isLoggedIn}
+            />
+            <PrivateRoute
+              path="/users"
+              component={Users}
+              isLoggedIn={this.state.isLoggedIn}
+            />
             <Route
               path="/login"
               render={props => (
@@ -74,7 +81,6 @@ class App extends Component {
               )}
             />
             <Route exact path="/" render={() => <Redirect to="/users" />} />
-
             <Route component={this.noMatch} />
           </Switch>
         </main>

@@ -37,6 +37,7 @@ Thumbs.db
 # Observations #
 ################
 missing.txt
+data/
 
 # NPM/Node projects #
 #####################

@@ -5,7 +5,6 @@ import ListWithPagination from './users/ListUsers';
 import CustomizedSnackbar from './shared/CustomizedSnackbar';
 import Progress from './shared/Progress';
 import { UserApi } from '../lib/user';
-import { user, findByPage } from '../data/user';
 
 class Users extends Component {
   state = {
@@ -34,8 +33,7 @@ class Users extends Component {
   getUsers = async (offset = 0, page = 1) => {
     try {
       this.setState({ inProgress: true });
-      //const users = await UserApi.findByPage(page);
-      const users = findByPage(offset);
+      const users = await UserApi.findByPage(page);
       this.setState({
         inProgress: false,
         users: users,
@@ -59,7 +57,7 @@ class Users extends Component {
   redirectToEdit = async id => {
     try {
       this.setState({ inProgress: true });
-      //const user = await UserApi.findById(id);
+      const user = await UserApi.findById(id);
 
       // Observation
       // State passed throught the URL has a size limit e.g Firefox has
@@ -69,8 +67,7 @@ class Users extends Component {
       // throw a error message.
       this.props.history.push({
         pathname: '/users/' + id,
-        //state: { user: user }
-        state: { user: user() },
+        state: { user: user },
       });
 
       this.setState({ inProgress: false });
@@ -90,7 +87,7 @@ class Users extends Component {
   performDelete = async id => {
     try {
       this.setState({ inProgress: true });
-      //await UserApi.deleteById(id);
+      await UserApi.deleteById(id);
 
       this.setState({
         inProgress: false,
