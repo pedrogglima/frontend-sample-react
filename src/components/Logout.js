@@ -1,17 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { client } from '../lib/client';
 
-class Logout extends Component {
-  constructor(props) {
-    super(props);
+const Logout = props => {
+  props.performLogout();
 
-    client.logout();
-  }
-
-  render() {
-    return <Redirect to="/login" />;
-  }
-}
+  return (
+    <Redirect to="/login" />
+  );
+};
 
 export default Logout;

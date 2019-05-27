@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
-import { ClientApi } from '../lib/client';
 
-const PrivateRoute = ({ component, ...rest }) => (
+const PrivateRoute = ({ component, isLoggedIn, ...rest }) => (
   <Route
     {...rest}
     render={props =>
-      ClientApi.isLoggedIn() ? (
+      isLoggedIn ? (
         React.createElement(component, props)
       ) : (
         <Redirect
@@ -23,6 +22,7 @@ const PrivateRoute = ({ component, ...rest }) => (
 
 PrivateRoute.propTypes = {
   component: PropTypes.func.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
   path: PropTypes.string.isRequired,
 };
 

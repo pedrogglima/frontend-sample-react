@@ -59,15 +59,20 @@ class App extends Component {
         />
         <main className={classes.main}>
           <Switch>
-            <PrivateRoute path="/users/:id" component={User} />
-            <PrivateRoute path="/users" component={Users} />
+            <PrivateRoute path="/users/:id" component={User} isLoggedIn={this.state.isLoggedIn} />
+            <PrivateRoute path="/users" component={Users} isLoggedIn={this.state.isLoggedIn} />
             <Route
               path="/login"
               render={props => (
                 <Login {...props} performLogin={this.performLogin} />
               )}
             />
-            <Route path="/logout" component={Logout} />
+            <Route
+              path="/logout"
+              render={props => (
+                <Logout {...props} performLogout={this.performLogout} />
+              )}
+            />
             <Route exact path="/" render={() => <Redirect to="/users" />} />
 
             <Route component={this.noMatch} />

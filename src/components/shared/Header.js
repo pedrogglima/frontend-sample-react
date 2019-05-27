@@ -24,7 +24,13 @@ const styles = theme => ({
 const Header = props => {
   const { classes } = props;
 
-  const onRedirectTo = () => {
+  const redirectToLogout = () => {
+    props.history.replace({
+      pathname: '/logout',
+    });
+  };
+
+  const redirectToUsers = () => {
     props.history.push({
       pathname: '/users',
     });
@@ -41,14 +47,14 @@ const Header = props => {
             <IconButton
               aria-label="USERS"
               className={classes.icon}
-              onClick={onRedirectTo}
+              onClick={redirectToUsers}
             >
               <PeopleIcon className="material-icons" />
             </IconButton>
             <IconButton
               aria-label="LOGOUT"
               className={classes.icon}
-              onClick={props.onLogoutClick}
+              onClick={redirectToLogout}
             >
               <ExitToAppIcon className="material-icons" />
             </IconButton>
@@ -63,7 +69,6 @@ Header.propTypes = {
   history: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
-  onLogoutClick: PropTypes.func.isRequired,
 };
 
 export default withRouter(withStyles(styles)(Header));

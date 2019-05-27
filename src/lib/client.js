@@ -38,6 +38,12 @@ class Client {
 
   logout = () => {
     this.removeToken();
+    try {
+      const url = this.urlApi + '/logout?' + this.delayApi;
+      fetchJSON(url, 'POST');
+    } catch (err) {
+      throw err;
+    }
   };
 
   login = async (email, password) => {

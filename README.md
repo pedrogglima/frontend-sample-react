@@ -1,6 +1,6 @@
 ## The app
 
-In construction...
+Under construction...
 
 ## How to use
 
