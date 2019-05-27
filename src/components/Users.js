@@ -113,8 +113,8 @@ class Users extends Component {
     }
   };
 
-  performPageChange = offset => {
-    this.getUsers(offset);
+  performPageChange = (offset, page) => {
+    this.getUsers(offset, page);
   };
 
   closeMessage = () => {
