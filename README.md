@@ -5,7 +5,7 @@ Simple Authentication & CRUD webpage for frontend job's interview. The project w
 
 ## How to use
 
-You can run the project throughout the installation process or access the link where the project has been free hosted: [Frontend-React](https://rocky-castle-82785.herokuapp.com/) - it may take some seconds to load the page in the first time because of the Host's policy for free service. It's important to highlight that the project is dependent on the API to render pages that demand data, so those pages won't work if the API is offline. You can check whether the API is offline on their [page](https://reqres.in/).
+You can run the project throughout the installation process or access the link where the project has been free hosted: [Frontend-React](https://frontend-sample-react.herokuapp.com/) - it may take some seconds to load the page in the first time because of the Host's policy for free service. It's important to highlight that the project is dependent on the API to render pages that demand data, so those pages won't work if the API is offline. You can check whether the API is offline on their [page](https://reqres.in/).
 
 ### Installation
 
